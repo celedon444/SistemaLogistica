@@ -6,10 +6,10 @@ import java.sql.SQLException;
 
 public class ConexionBD {
 
-    // URL simplificada para evitar errores de denegación
+
     private static final String URL = "jdbc:mysql://bslq1szixi7rlqpghdj1-mysql.services.clever-cloud.com:3306/bslq1szixi7rlqpghdj1";
     private static final String USER = "u8hcsurqmxyg97oa";
-    private static final String PASS = "6EpneIQnq1gYYdMcSlyr"; // COPIA Y PEGA OTRA VEZ DESDE LA WEB
+    private static final String PASS = "6EpneIQnq1gYYdMcSlyr"; 
 
     public static Connection conectar() {
         Connection con = null;

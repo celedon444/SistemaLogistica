@@ -9,14 +9,17 @@ package vista;
  * @author camil
  */
 public class FrmMenuPrincipal extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName());
 
     /**
      * Creates new form FrmMenuPrincipal
      */
-    public FrmMenuPrincipal() {
+    public FrmMenuPrincipal(String nombre) { // <--- Agregamos String nombre aquí
         initComponents();
+
+        // Ahora 'nombre' ya funciona porque viene desde el paréntesis
+        lblUsuarioLogueado.setText("Usuario conectado: " + nombre);
     }
 
     /**
@@ -28,21 +31,144 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        desktopContenedor = new javax.swing.JDesktopPane();
+        jPanel1 = new javax.swing.JPanel();
+        lblUsuarioLogueado = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        menuPrincipal = new javax.swing.JMenu();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        itemCerrarSesion = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        menuOperaciones = new javax.swing.JMenu();
+        itemRegistro = new javax.swing.JMenuItem();
+        itemInventario = new javax.swing.JMenuItem();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblUsuarioLogueado.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblUsuarioLogueado.setForeground(new java.awt.Color(0, 0, 0));
+        lblUsuarioLogueado.setText("Usuario: [Nombre]");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(lblUsuarioLogueado)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lblUsuarioLogueado)
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Mediapost-1200-x-600-px-2.png"))); // NOI18N
+        jLabel1.setText("jLabel1");
+
+        desktopContenedor.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktopContenedor.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout desktopContenedorLayout = new javax.swing.GroupLayout(desktopContenedor);
+        desktopContenedor.setLayout(desktopContenedorLayout);
+        desktopContenedorLayout.setHorizontalGroup(
+            desktopContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        desktopContenedorLayout.setVerticalGroup(
+            desktopContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, desktopContenedorLayout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        menuPrincipal.setText("Menú");
+        menuPrincipal.add(jSeparator1);
+
+        itemCerrarSesion.setText("Cerrar sesión");
+        itemCerrarSesion.addActionListener(this::itemCerrarSesionActionPerformed);
+        menuPrincipal.add(itemCerrarSesion);
+
+        jMenuItem2.setText("Salir");
+        menuPrincipal.add(jMenuItem2);
+
+        jMenuBar1.add(menuPrincipal);
+
+        menuOperaciones.setText("Operaciones");
+
+        itemRegistro.setText("Registrar paquete");
+        itemRegistro.addActionListener(this::itemRegistroActionPerformed);
+        menuOperaciones.add(itemRegistro);
+
+        itemInventario.setText("Ver inventario ");
+        itemInventario.addActionListener(this::itemInventarioActionPerformed);
+        menuOperaciones.add(itemInventario);
+
+        jMenuBar1.add(menuOperaciones);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(desktopContenedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(desktopContenedor, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void itemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarSesionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemCerrarSesionActionPerformed
+
+    private void itemRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRegistroActionPerformed
+        // 1. Creamos la ventana que acabamos de diseñar
+        VtnRegistroPaquetes ventana = new VtnRegistroPaquetes();
+
+        // 2. La agregamos al contenedor azul que tienes en el centro
+        desktopContenedor.add(ventana);
+
+        // 3. La hacemos visible
+        ventana.setVisible(true);
+    }//GEN-LAST:event_itemRegistroActionPerformed
+
+    private void itemInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemInventarioActionPerformed
+        // TODO add your handling code here:
+        // 1. Creamos una instancia de la ventana de inventario
+        VtnInventario vtn = new VtnInventario();
+
+        // 2. La agregamos al DesktopPane (el fondo azul de tu programa)
+        // Nota: Revisa si tu DesktopPane se llama 'desktopContenedor' o similar
+        desktopContenedor.add(vtn);
+
+        // 3. La hacemos visible
+        vtn.setVisible(true);
+    }//GEN-LAST:event_itemInventarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -66,9 +192,22 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmMenuPrincipal().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new FrmMenuPrincipal("Admin").setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane desktopContenedor;
+    private javax.swing.JMenuItem itemCerrarSesion;
+    private javax.swing.JMenuItem itemInventario;
+    private javax.swing.JMenuItem itemRegistro;
+    private javax.swing.JDialog jDialog1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JLabel lblUsuarioLogueado;
+    private javax.swing.JMenu menuOperaciones;
+    private javax.swing.JMenu menuPrincipal;
     // End of variables declaration//GEN-END:variables
 }
