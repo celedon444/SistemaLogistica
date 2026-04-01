@@ -20,6 +20,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         // Ahora 'nombre' ya funciona porque viene desde el paréntesis
         lblUsuarioLogueado.setText("Usuario conectado: " + nombre);
+         setLocationRelativeTo(null);
     }
 
     /**
@@ -69,19 +70,19 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addContainerGap()
                 .addComponent(lblUsuarioLogueado)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addComponent(lblUsuarioLogueado)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Mediapost-1200-x-600-px-2.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/imagen fondo logisticaaaaaaaaaa.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
         desktopContenedor.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -91,14 +92,18 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         desktopContenedor.setLayout(desktopContenedorLayout);
         desktopContenedorLayout.setHorizontalGroup(
             desktopContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(desktopContenedorLayout.createSequentialGroup()
+                .addGroup(desktopContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         desktopContenedorLayout.setVerticalGroup(
             desktopContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, desktopContenedorLayout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -132,7 +137,9 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopContenedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(desktopContenedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,6 +151,24 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
     private void itemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarSesionActionPerformed
         // TODO add your handling code here:
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+        this, 
+        "¿Estás seguro de que deseas cerrar la sesión?", 
+        "Cerrar Sesión", 
+        javax.swing.JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+        // 2. Crear una nueva instancia de tu ventana de Login
+        // Asegúrate de que el nombre sea exactamente el de tu clase de Login
+        FrmLogin login = new FrmLogin(); 
+        
+        // 3. Hacer visible el login
+        login.setVisible(true);
+        
+        // 4. Cerrar (destruir) la ventana actual del Menú Principal
+        this.dispose(); 
+    }
     }//GEN-LAST:event_itemCerrarSesionActionPerformed
 
     private void itemRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRegistroActionPerformed

@@ -42,7 +42,7 @@ public class VtnInventario extends javax.swing.JInternalFrame {
             fila[4] = rs.getDouble("peso");
             fila[5] = rs.getString("tipo_envio");
             fila[6] = rs.getString("estado");
-            fila[7] = rs.getDate("fecha_registro");
+            fila[7] = rs.getString("fecha_registro");
             modelo.addRow(fila);
         }
         
@@ -86,7 +86,7 @@ public class VtnInventario extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Guía", "Remitente", "Destinatario", "Dirección", "Peso", "Tipo", "Estado", "Fecha"
+                "Guía", "Remitente", "Destinatario", "Dirección", "Peso (Kg)", "Tipo", "Estado", "Fecha y Hora"
             }
         ));
         jScrollPane1.setViewportView(tblInventario);
@@ -101,24 +101,25 @@ public class VtnInventario extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(176, 176, 176)
-                .addComponent(jLabel1)
-                .addContainerGap(225, Short.MAX_VALUE))
             .addComponent(jScrollPane1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnActualizar)
-                .addGap(28, 28, 28))
+                .addContainerGap(354, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(347, 347, 347))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnActualizar)
+                        .addGap(20, 20, 20))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
                 .addComponent(btnActualizar)
-                .addGap(45, 45, 45)
+                .addGap(32, 32, 32)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 

@@ -16,12 +16,12 @@ public class ConexionBD {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(URL, USER, PASS);
-            System.out.println("¡CONEXIÓN EXITOSA!");
+            System.out.println("Conexion exitosa");
         } catch (ClassNotFoundException e) {
-            System.out.println("ERROR: No se encontró el Driver");
+            System.out.println("Error: No se encontro el driver");
         } catch (SQLException e) {
             // Este print nos dirá si sigue siendo la contraseña
-            System.out.println("ERROR SQL: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
         return con;
     }

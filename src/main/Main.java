@@ -11,9 +11,9 @@ public class Main {
         Connection c = ConexionBD.conectar();
         
         if (c != null) {
-            System.out.println("¡PRUEBA SUPERADA! Tu sistema ya habla con la nube.");
+            System.out.println("Prueba superada. El sistema ya habla con la nube.");
         } else {
-            System.out.println("Algo falló. Revisa que la contraseña sea la correcta.");
+            System.out.println("Algo fallo. Revisa que la contraseña sea la correcta.");
         }
     }
 }
