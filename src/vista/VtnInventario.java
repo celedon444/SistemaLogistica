@@ -3,7 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
-
+import modelo.Paquete; 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 /**
  *
  * @author camil
@@ -21,28 +26,40 @@ public class VtnInventario extends javax.swing.JInternalFrame {
     public void mostrarDatos() {
     // Definimos títulos de la tabla
     String[] titulos = {"Guía", "Remitente", "Destinatario", "Dirección", "Peso", "Tipo", "Estado", "Fecha"};
-    javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(null, titulos);
+        DefaultTableModel modelo = new DefaultTableModel(null, titulos);
     
     try {
         // Conexión a la BD
-        java.sql.Connection con = conexion.ConexionBD.conectar();
+        Connection con = conexion.ConexionBD.conectar();
         
         // Consulta SQL con las nuevas columnas que agregamos
-        String sql = "SELECT guia_rastreo, remitente, destinatario, direccion_entrega, peso, tipo_envio, estado, fecha_registro FROM paquetes";
+        String sql = "SELECT * FROM paquetes";
         
-        java.sql.PreparedStatement ps = con.prepareStatement(sql);
-        java.sql.ResultSet rs = ps.executeQuery();
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
 
-        Object[] fila = new Object[8]; // 8 columnas
         while (rs.next()) {
-            fila[0] = rs.getString("guia_rastreo");
-            fila[1] = rs.getString("remitente");
-            fila[2] = rs.getString("destinatario");
-            fila[3] = rs.getString("direccion_entrega");
-            fila[4] = rs.getDouble("peso");
-            fila[5] = rs.getString("tipo_envio");
-            fila[6] = rs.getString("estado");
-            fila[7] = rs.getString("fecha_registro");
+            Paquete p = new Paquete(
+                rs.getString("guia_rastreo"),
+                rs.getString("remitente"),
+                rs.getString("destinatario"),
+                rs.getString("direccion_entrega"),
+                rs.getDouble("peso"),
+                rs.getString("tipo_envio"),
+                rs.getString("estado"),
+                rs.getString("fecha_registro")
+            );
+            Object[] fila = new Object[] {
+                p.getGuia(),
+                p.getRemitente(), 
+                p.getDestinatario(), 
+                p.getDireccion(), 
+                p.getPeso(), 
+                p.getTipo(), 
+                p.getEstado(), 
+                p.getFecha()
+            };
+            
             modelo.addRow(fila);
         }
         

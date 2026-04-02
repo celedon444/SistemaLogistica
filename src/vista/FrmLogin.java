@@ -3,6 +3,7 @@ package vista;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import modelo.Usuario;
 import conexion.ConexionBD;
 import javax.swing.JOptionPane;
 
@@ -133,16 +134,17 @@ public class FrmLogin extends javax.swing.JFrame {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Sacamos el rol de la base de datos
-                String rol = rs.getString("rol");
+                Usuario userLogueado = new Usuario(
+                    rs.getString("username"), 
+                    rs.getString("password"), 
+                    rs.getString("rol")
+                );
                 
-                JOptionPane.showMessageDialog(this, "Bienvenido, " + usuario + " (" + rol + ")");
+                JOptionPane.showMessageDialog(this, "Bienvenido, " + userLogueado.getNombre() + " (" + userLogueado.getRol() + ")");
 
                 // --- CONEXIÓN A LA SIGUIENTE VISTA ---
                 // Creamos el menú y le pasamos el nombre del usuario
-                FrmMenuPrincipal principal = new FrmMenuPrincipal(usuario);
-                
-                // Lo hacemos visible y maximizado
+                FrmMenuPrincipal principal = new FrmMenuPrincipal(userLogueado.getNombre());
                 principal.setVisible(true);
                 
                 // Cerramos el login
@@ -151,6 +153,7 @@ public class FrmLogin extends javax.swing.JFrame {
             } else {
                 // Si el ResultSet está vacío, es porque el usuario/clave no coinciden
                 JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
+                txtContrasena.setText("");
             }
 
             con.close(); 
