@@ -20,7 +20,8 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         // Ahora 'nombre' ya funciona porque viene desde el paréntesis
         lblUsuarioLogueado.setText("Usuario conectado: " + nombre);
-         setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
+
     }
 
     /**
@@ -36,12 +37,12 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         desktopContenedor = new javax.swing.JDesktopPane();
         jPanel1 = new javax.swing.JPanel();
         lblUsuarioLogueado = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        lblImagen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuPrincipal = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         itemCerrarSesion = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        itemSalir = new javax.swing.JMenuItem();
         menuOperaciones = new javax.swing.JMenu();
         itemRegistro = new javax.swing.JMenuItem();
         itemInventario = new javax.swing.JMenuItem();
@@ -77,33 +78,28 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lblUsuarioLogueado)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/imagen fondo logisticaaaaaaaaaa.png"))); // NOI18N
-        jLabel1.setText("jLabel1");
+        lblImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/Fondo-MenuPrincipal.png"))); // NOI18N
+        lblImagen.setText("jLabel1");
 
         desktopContenedor.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        desktopContenedor.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktopContenedor.setLayer(lblImagen, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout desktopContenedorLayout = new javax.swing.GroupLayout(desktopContenedor);
         desktopContenedor.setLayout(desktopContenedorLayout);
         desktopContenedorLayout.setHorizontalGroup(
             desktopContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(desktopContenedorLayout.createSequentialGroup()
-                .addGroup(desktopContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, Short.MAX_VALUE)
         );
         desktopContenedorLayout.setVerticalGroup(
             desktopContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, desktopContenedorLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -114,8 +110,9 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         itemCerrarSesion.addActionListener(this::itemCerrarSesionActionPerformed);
         menuPrincipal.add(itemCerrarSesion);
 
-        jMenuItem2.setText("Salir");
-        menuPrincipal.add(jMenuItem2);
+        itemSalir.setText("Salir");
+        itemSalir.addActionListener(this::itemSalirActionPerformed);
+        menuPrincipal.add(itemSalir);
 
         jMenuBar1.add(menuPrincipal);
 
@@ -137,13 +134,11 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(desktopContenedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(desktopContenedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopContenedor, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(desktopContenedor)
         );
 
         pack();
@@ -152,48 +147,78 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private void itemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarSesionActionPerformed
         // TODO add your handling code here:
         int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
-        this, 
-        "¿Estás seguro de que deseas cerrar la sesión?", 
-        "Cerrar Sesión", 
-        javax.swing.JOptionPane.YES_NO_OPTION
-    );
+                this,
+                "¿Estás seguro de que deseas cerrar la sesión?",
+                "Cerrar Sesión",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
 
-    if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
-        // 2. Crear una nueva instancia de tu ventana de Login
-        // Asegúrate de que el nombre sea exactamente el de tu clase de Login
-        FrmLogin login = new FrmLogin(); 
-        
-        // 3. Hacer visible el login
-        login.setVisible(true);
-        
-        // 4. Cerrar (destruir) la ventana actual del Menú Principal
-        this.dispose(); 
-    }
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+            // 2. Crear una nueva instancia de tu ventana de Login
+            // Asegúrate de que el nombre sea exactamente el de tu clase de Login
+            FrmLogin login = new FrmLogin();
+
+            // 3. Hacer visible el login
+            login.setVisible(true);
+
+            // 4. Cerrar (destruir) la ventana actual del Menú Principal
+            this.dispose();
+        }
     }//GEN-LAST:event_itemCerrarSesionActionPerformed
 
     private void itemRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRegistroActionPerformed
-        // 1. Creamos la ventana que acabamos de diseñar
-        VtnRegistroPaquetes ventana = new VtnRegistroPaquetes();
+        // 1. Verificamos si la ventana ya está abierta para no duplicarla
+        for (javax.swing.JInternalFrame frame : desktopContenedor.getAllFrames()) {
+            if (frame instanceof VtnRegistroPaquetes) {
+                frame.toFront(); // La trae al frente si ya existe
+                return;
+            }
+        }
 
-        // 2. La agregamos al contenedor azul que tienes en el centro
+        // 2. Si no existe, la creamos
+        VtnRegistroPaquetes ventana = new VtnRegistroPaquetes();
         desktopContenedor.add(ventana);
 
-        // 3. La hacemos visible
+        // 3. Centrar la ventana en el panel
+        int x = (desktopContenedor.getWidth() / 2) - (ventana.getWidth() / 2);
+        int y = (desktopContenedor.getHeight() / 2) - (ventana.getHeight() / 2);
+        ventana.setLocation(x, y);
+
         ventana.setVisible(true);
     }//GEN-LAST:event_itemRegistroActionPerformed
 
     private void itemInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemInventarioActionPerformed
-        // TODO add your handling code here:
-        // 1. Creamos una instancia de la ventana de inventario
-        VtnInventario vtn = new VtnInventario();
+        // 1. Verificamos si ya está abierta
+        for (javax.swing.JInternalFrame frame : desktopContenedor.getAllFrames()) {
+            if (frame instanceof VtnInventario) {
+                frame.toFront();
+                return;
+            }
+        }
 
-        // 2. La agregamos al DesktopPane (el fondo azul de tu programa)
-        // Nota: Revisa si tu DesktopPane se llama 'desktopContenedor' o similar
+        VtnInventario vtn = new VtnInventario();
         desktopContenedor.add(vtn);
 
-        // 3. La hacemos visible
+        // Centrar
+        int x = (desktopContenedor.getWidth() / 2) - (vtn.getWidth() / 2);
+        int y = (desktopContenedor.getHeight() / 2) - (vtn.getHeight() / 2);
+        vtn.setLocation(x, y);
+
         vtn.setVisible(true);
     }//GEN-LAST:event_itemInventarioActionPerformed
+
+    private void itemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSalirActionPerformed
+
+        // Preguntamos antes de cerrar para que no sea un accidente
+        int respuesta = javax.swing.JOptionPane.showConfirmDialog(this,
+                "¿Desea cerrar la aplicación por completo?",
+                "Confirmar salida",
+                javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == javax.swing.JOptionPane.YES_OPTION) {
+            System.exit(0); // Esto mata el proceso del programa
+        }
+    }//GEN-LAST:event_itemSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,12 +250,12 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemInventario;
     private javax.swing.JMenuItem itemRegistro;
+    private javax.swing.JMenuItem itemSalir;
     private javax.swing.JDialog jDialog1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblUsuarioLogueado;
     private javax.swing.JMenu menuOperaciones;
     private javax.swing.JMenu menuPrincipal;

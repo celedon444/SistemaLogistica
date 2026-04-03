@@ -3,12 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
-import modelo.Paquete; 
-import java.util.ArrayList;
+
+import controlador.PaqueteController;
 import javax.swing.table.DefaultTableModel;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
 /**
  *
  * @author camil
@@ -18,58 +16,16 @@ public class VtnInventario extends javax.swing.JInternalFrame {
     /**
      * Creates new form VtnInventario
      */
+    PaqueteController paqueteControl = new PaqueteController();
+
     public VtnInventario() {
         initComponents();
         mostrarDatos(); // Esto cargará los paquetes registrados automáticamente
     }
-    
-    public void mostrarDatos() {
-    // Definimos títulos de la tabla
-    String[] titulos = {"Guía", "Remitente", "Destinatario", "Dirección", "Peso", "Tipo", "Estado", "Fecha"};
-        DefaultTableModel modelo = new DefaultTableModel(null, titulos);
-    
-    try {
-        // Conexión a la BD
-        Connection con = conexion.ConexionBD.conectar();
-        
-        // Consulta SQL con las nuevas columnas que agregamos
-        String sql = "SELECT * FROM paquetes";
-        
-        PreparedStatement ps = con.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
 
-        while (rs.next()) {
-            Paquete p = new Paquete(
-                rs.getString("guia_rastreo"),
-                rs.getString("remitente"),
-                rs.getString("destinatario"),
-                rs.getString("direccion_entrega"),
-                rs.getDouble("peso"),
-                rs.getString("tipo_envio"),
-                rs.getString("estado"),
-                rs.getString("fecha_registro")
-            );
-            Object[] fila = new Object[] {
-                p.getGuia(),
-                p.getRemitente(), 
-                p.getDestinatario(), 
-                p.getDireccion(), 
-                p.getPeso(), 
-                p.getTipo(), 
-                p.getEstado(), 
-                p.getFecha()
-            };
-            
-            modelo.addRow(fila);
-        }
-        
-        tblInventario.setModel(modelo); // Asignamos los datos a tu tabla
-        con.close();
-        
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+    public void mostrarDatos() {
+        tblInventario.setModel(paqueteControl.consultarInventario());
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -145,7 +101,7 @@ public class VtnInventario extends javax.swing.JInternalFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-        mostrarDatos(); // Simplemente vuelve a llamar a la función de carga
+        mostrarDatos();
     }//GEN-LAST:event_btnActualizarActionPerformed
 
 

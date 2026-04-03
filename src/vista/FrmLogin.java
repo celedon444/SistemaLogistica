@@ -115,51 +115,30 @@ public class FrmLogin extends javax.swing.JFrame {
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         // TODO add your handling code here:
-        String usuario = txtUsuario.getText();
-        String password = new String(txtContrasena.getPassword());
+        String user = txtUsuario.getText().trim();
+        String pass = new String(txtContrasena.getPassword());
 
-        if (usuario.isEmpty() || password.isEmpty()) {
+        if (user.isEmpty() || pass.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor llene todos los campos");
             return;
         }
 
-        try {
-            Connection con = ConexionBD.conectar();
-            String sql = "SELECT * FROM usuarios WHERE username=? AND password=?";
-            PreparedStatement ps = con.prepareStatement(sql);
+        // Usamos el DAO en lugar de escribir SQL aquí
+        dao.UsuarioDAO uDao = new dao.UsuarioDAO();
+        modelo.Usuario usuarioLogueado = uDao.validarUsuario(user, pass);
 
-            ps.setString(1, usuario);
-            ps.setString(2, password);
+        if (usuarioLogueado != null) {
+            JOptionPane.showMessageDialog(this, "Bienvenido, " + usuarioLogueado.getNombre());
 
-            ResultSet rs = ps.executeQuery();
+            // Abrimos el menú principal pasando el nombre
+            FrmMenuPrincipal principal = new FrmMenuPrincipal(usuarioLogueado.getNombre());
+            principal.setVisible(true);
 
-            if (rs.next()) {
-                Usuario userLogueado = new Usuario(
-                    rs.getString("username"), 
-                    rs.getString("password"), 
-                    rs.getString("rol")
-                );
-                
-                JOptionPane.showMessageDialog(this, "Bienvenido, " + userLogueado.getNombre() + " (" + userLogueado.getRol() + ")");
-
-                // --- CONEXIÓN A LA SIGUIENTE VISTA ---
-                // Creamos el menú y le pasamos el nombre del usuario
-                FrmMenuPrincipal principal = new FrmMenuPrincipal(userLogueado.getNombre());
-                principal.setVisible(true);
-                
-                // Cerramos el login
-                this.dispose(); 
-                
-            } else {
-                // Si el ResultSet está vacío, es porque el usuario/clave no coinciden
-                JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
-                txtContrasena.setText("");
-            }
-
-            con.close(); 
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error de sistema: " + e.getMessage());
+            this.dispose(); // Cerramos el login
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
+            txtContrasena.setText("");
+            txtUsuario.requestFocus();
         }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 

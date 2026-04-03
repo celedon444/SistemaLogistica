@@ -4,6 +4,7 @@
  */
 package vista;
 
+import controlador.PaqueteController;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,22 +13,25 @@ import javax.swing.JOptionPane;
  */
 public class VtnRegistroPaquetes extends javax.swing.JInternalFrame {
 
+    PaqueteController paqueteControl = new PaqueteController();
+
     /**
      * Creates new form VtnGestionInventario
      */
-    public VtnRegistroPaquetes() {
-        initComponents();
-        this.limpiarCampos(); // Limpia los textos por defecto (jTextField1...)
-
+    private void actualizarFechaActual() {
         // Obtenemos fecha y hora actual
         java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
-
-        // Creamos un formato amigable: Año-Mes-Día Hora:Minuto:Segundo
+        // Definimos el formato
         java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        // Lo asignamos al campo de texto
+        // Lo asignamos al campo
         txtFechaRegistro.setText(ahora.format(formato));
+    }
 
+    public VtnRegistroPaquetes() {
+        initComponents();
+        txtFechaRegistro.setEditable(false); // <--- El usuario solo puede verla, no cambiarla
+        this.limpiarCampos();
+        this.actualizarFechaActual();
     }
 
     private void limpiarCampos() {
@@ -37,10 +41,7 @@ public class VtnRegistroPaquetes extends javax.swing.JInternalFrame {
         txtDireccion.setText("");
         txtPeso.setText("");
 
-        // Actualizar a la hora actual al limpiar
-        java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
-        java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        txtFechaRegistro.setText(ahora.format(formato));
+        this.actualizarFechaActual(); // <--- Se actualiza cada vez que limpias
 
         cbEstado.setSelectedIndex(0);
         cbTipoEnvio.setSelectedIndex(0);
@@ -145,33 +146,34 @@ public class VtnRegistroPaquetes extends javax.swing.JInternalFrame {
                 .addGap(354, 354, 354)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(128, 128, 128)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel8)
-                    .addComponent(txtGuia)
-                    .addComponent(txtDireccion)
-                    .addComponent(cbTipoEnvio, 0, 200, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel7)
-                        .addComponent(txtRemitente)
-                        .addComponent(txtPeso)
-                        .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(115, 115, 115)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel8)
+                        .addComponent(txtGuia)
+                        .addComponent(cbTipoEnvio, 0, 200, Short.MAX_VALUE))
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel9)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnLimpiar))
-                    .addComponent(txtDestinatario)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel7)
+                    .addComponent(txtRemitente, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(txtPeso)
+                    .addComponent(cbEstado, 0, 200, Short.MAX_VALUE))
+                .addGap(115, 115, 115)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel9)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                            .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtDestinatario))
                     .addComponent(txtFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(122, 122, 122))
         );
@@ -186,91 +188,67 @@ public class VtnRegistroPaquetes extends javax.swing.JInternalFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtGuia, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtDestinatario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(107, 107, 107))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtRemitente, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbTipoEnvio, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(72, 72, 72))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtDestinatario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(43, 43, 43)
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtFechaRegistro))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtRemitente, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(50, 50, 50)
-                        .addComponent(jLabel6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbTipoEnvio, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(72, 72, 72))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnGuardar)
                             .addComponent(btnLimpiar))
-                        .addGap(71, 71, 71))))
+                        .addGap(74, 74, 74))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        String guia = txtGuia.getText();
-        String remitente = txtRemitente.getText();
-        String destinatario = txtDestinatario.getText();
-        String direccion = txtDireccion.getText();
+        // Le pedimos al controlador que haga el trabajo sucio
+        // Le pasamos los textos que el usuario escribió en los cuadritos (JTextFields)
+        boolean resultado = paqueteControl.guardarPaquete(
+                txtGuia.getText(),
+                txtRemitente.getText(),
+                txtDestinatario.getText(),
+                txtDireccion.getText(),
+                txtPeso.getText(),
+                cbTipoEnvio.getSelectedItem().toString(),
+                cbEstado.getSelectedItem().toString(),
+                txtFechaRegistro.getText()
+        );
 
-        // MEJORA: Quitamos espacios y cambiamos coma por punto
-        String pesoStr = txtPeso.getText().trim().replace(",", ".");
-
-        String tipoEnvio = cbTipoEnvio.getSelectedItem().toString();
-        String estado = cbEstado.getSelectedItem().toString();
-        String fecha = txtFechaRegistro.getText();
-
-        if (guia.isEmpty() || remitente.isEmpty() || destinatario.isEmpty() || pesoStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos obligatorios");
-            return;
+        // Si el controlador nos dice que sí se pudo guardar:
+        if (resultado) {
+            JOptionPane.showMessageDialog(this, "¡Excelente! Paquete registrado correctamente.");
+            limpiarCampos(); // Limpiamos la ventanita
         }
-
-        try {
-            double peso = Double.parseDouble(pesoStr); // Ahora aceptará 5.5 y 5,5
-
-            java.sql.Connection con = conexion.ConexionBD.conectar();
-            String sql = "INSERT INTO paquetes (guia_rastreo, remitente, destinatario, direccion_entrega, peso, tipo_envio, estado, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-            java.sql.PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, guia);
-            ps.setString(2, remitente);
-            ps.setString(3, destinatario);
-            ps.setString(4, direccion);
-            ps.setDouble(5, peso);
-            ps.setString(6, tipoEnvio);
-            ps.setString(7, estado);
-            ps.setString(8, fecha);
-
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(this, "¡Paquete registrado con éxito!");
-            limpiarCampos();
-            con.close();
-
-        } catch (NumberFormatException e) {
-            // Este es el aviso que te sale. Ahora será menos frecuente.
-            JOptionPane.showMessageDialog(this, "Error: El peso '" + pesoStr + "' no es válido.\nUse números decimales (Ej: 10.5)");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error de sistema: " + e.getMessage());
-        }
+        // Si algo sale mal, el controlador ya se encargó de mostrar el mensaje de error.
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
