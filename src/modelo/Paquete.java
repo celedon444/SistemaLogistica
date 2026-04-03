@@ -1,11 +1,11 @@
 package modelo;
 
+import java.sql.Timestamp; // <--- IMPORTANTE: Esta librería permite manejar tiempo exacto
+
 /**
- * Representa la entidad Paquete en el sistema.
- * Aplicamos POO: Encapsulamiento y Abstracción.
+ * Representa la entidad Paquete con soporte para cronómetro de tiempo real.
  */
 public class Paquete {
-    // Atributos privados (Encapsulamiento)
     private String guia;
     private String remitente;
     private String destinatario;
@@ -13,14 +13,16 @@ public class Paquete {
     private double peso;
     private String tipo;
     private String estado;
-    private String fecha;
+    
+    // Cambiamos 'String fecha' por 'Timestamp fechaSistema' para poder hacer cálculos
+    private Timestamp fechaSistema; 
 
-    // 1. Constructor vacío (Necesario para frameworks y flexibilidad)
+    // 1. Constructor vacío
     public Paquete() {
     }
 
-    // 2. Constructor con parámetros (Para crear objetos rápidamente)
-    public Paquete(String guia, String remitente, String destinatario, String direccion, double peso, String tipo, String estado, String fecha) {
+    // 2. Constructor con parámetros (Actualizado con Timestamp)
+    public Paquete(String guia, String remitente, String destinatario, String direccion, double peso, String tipo, String estado, Timestamp fechaSistema) {
         this.guia = guia;
         this.remitente = remitente;
         this.destinatario = destinatario;
@@ -28,10 +30,10 @@ public class Paquete {
         this.peso = peso;
         this.tipo = tipo;
         this.estado = estado;
-        this.fecha = fecha;
+        this.fechaSistema = fechaSistema;
     }
 
-    // 3. Métodos Getter y Setter (Acceso controlado a los datos)
+    // 3. Métodos Getter y Setter
     public String getGuia() { return guia; }
     public void setGuia(String guia) { this.guia = guia; }
 
@@ -53,12 +55,12 @@ public class Paquete {
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
 
-    public String getFecha() { return fecha; }
-    public void setFecha(String fecha) { this.fecha = fecha; }
+    // NUEVO GETTER Y SETTER PARA EL TIEMPO
+    public Timestamp getFechaSistema() { return fechaSistema; }
+    public void setFechaSistema(Timestamp fechaSistema) { this.fechaSistema = fechaSistema; }
 
-    // 4. Método toString (Útil para depuración/Logs)
     @Override
     public String toString() {
-        return "Paquete{" + "guia=" + guia + ", destinatario=" + destinatario + ", estado=" + estado + '}';
+        return "Paquete{" + "guia=" + guia + ", estado=" + estado + ", fecha=" + fechaSistema + '}';
     }
 }

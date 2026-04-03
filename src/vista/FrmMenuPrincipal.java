@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package vista;
 
 /**
@@ -34,9 +31,11 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jDialog1 = new javax.swing.JDialog();
+        jLabel13 = new javax.swing.JLabel();
         desktopContenedor = new javax.swing.JDesktopPane();
         jPanel1 = new javax.swing.JPanel();
         lblUsuarioLogueado = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         lblImagen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuPrincipal = new javax.swing.JMenu();
@@ -46,6 +45,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         menuOperaciones = new javax.swing.JMenu();
         itemRegistro = new javax.swing.JMenuItem();
         itemInventario = new javax.swing.JMenuItem();
+        itemRastreo = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -58,6 +58,9 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
             .addGap(0, 300, Short.MAX_VALUE)
         );
 
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/logo.png"))); // NOI18N
+        jLabel13.setText("logo");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -66,6 +69,9 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         lblUsuarioLogueado.setForeground(new java.awt.Color(0, 0, 0));
         lblUsuarioLogueado.setText("Usuario: [Nombre]");
 
+        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel11.setText("© 2026 GoPack | Todos los derechos reservados");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -73,13 +79,18 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblUsuarioLogueado)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel11)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(lblUsuarioLogueado)
-                .addGap(0, 12, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUsuarioLogueado)
+                    .addComponent(jLabel11))
+                .addContainerGap())
         );
 
         lblImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/Fondo-MenuPrincipal.png"))); // NOI18N
@@ -92,8 +103,8 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         desktopContenedor.setLayout(desktopContenedorLayout);
         desktopContenedorLayout.setHorizontalGroup(
             desktopContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         desktopContenedorLayout.setVerticalGroup(
             desktopContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,6 +136,10 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         itemInventario.setText("Ver inventario ");
         itemInventario.addActionListener(this::itemInventarioActionPerformed);
         menuOperaciones.add(itemInventario);
+
+        itemRastreo.setText("Rastrear Paquete");
+        itemRastreo.addActionListener(this::itemRastreoActionPerformed);
+        menuOperaciones.add(itemRastreo);
 
         jMenuBar1.add(menuOperaciones);
 
@@ -179,10 +194,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         VtnRegistroPaquetes ventana = new VtnRegistroPaquetes();
         desktopContenedor.add(ventana);
 
-        // 3. Centrar la ventana en el panel
-        int x = (desktopContenedor.getWidth() / 2) - (ventana.getWidth() / 2);
-        int y = (desktopContenedor.getHeight() / 2) - (ventana.getHeight() / 2);
-        ventana.setLocation(x, y);
 
         ventana.setVisible(true);
     }//GEN-LAST:event_itemRegistroActionPerformed
@@ -199,10 +210,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         VtnInventario vtn = new VtnInventario();
         desktopContenedor.add(vtn);
 
-        // Centrar
-        int x = (desktopContenedor.getWidth() / 2) - (vtn.getWidth() / 2);
-        int y = (desktopContenedor.getHeight() / 2) - (vtn.getHeight() / 2);
-        vtn.setLocation(x, y);
+   
 
         vtn.setVisible(true);
     }//GEN-LAST:event_itemInventarioActionPerformed
@@ -219,6 +227,27 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
             System.exit(0); // Esto mata el proceso del programa
         }
     }//GEN-LAST:event_itemSalirActionPerformed
+
+    private void itemRastreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRastreoActionPerformed
+        // 1. Verificamos si ya está abierta usando el ciclo que ya conoces
+        for (javax.swing.JInternalFrame frame : desktopContenedor.getAllFrames()) {
+            if (frame instanceof VtnRastreo) {
+                frame.toFront(); // Si existe, la traemos al frente
+                return; // Salimos del método para no crear una nueva
+            }
+        }
+
+        // 2. Si no existe, la creamos
+        VtnRastreo ventanaRastreo = new VtnRastreo();
+        
+       
+        
+        desktopContenedor.add(ventanaRastreo);
+
+      
+
+        ventanaRastreo.setVisible(true);
+    }//GEN-LAST:event_itemRastreoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,9 +278,12 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane desktopContenedor;
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemInventario;
+    private javax.swing.JMenuItem itemRastreo;
     private javax.swing.JMenuItem itemRegistro;
     private javax.swing.JMenuItem itemSalir;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
