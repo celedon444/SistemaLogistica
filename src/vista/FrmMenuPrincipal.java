@@ -12,9 +12,15 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form FrmMenuPrincipal
      */
-    public FrmMenuPrincipal(String nombre) { // <--- Agregamos String nombre aquí
+    
+    String nombre;
+    String rol;
+    
+    public FrmMenuPrincipal(String nombre, String rol) { // <--- Agregamos String nombre aquí
         initComponents();
-
+        this.nombre = nombre;
+        this.rol = rol;
+        
         // Ahora 'nombre' ya funciona porque viene desde el paréntesis
         lblUsuarioLogueado.setText("Usuario conectado: " + nombre);
         setLocationRelativeTo(null);
@@ -271,7 +277,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmMenuPrincipal("Admin").setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new FrmLogin().setVisible(true)); 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

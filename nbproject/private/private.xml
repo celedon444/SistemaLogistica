@@ -9,6 +9,12 @@
             <file>file:/C:/Users/camil/Documents/NetBeansProjects/SistemaLogistica/src/vista/VtnRegistroPaquetes.java</file>
             <file>file:/C:/Users/camil/Documents/NetBeansProjects/SistemaLogistica/src/vista/VtnInventario.java</file>
             <file>file:/C:/Users/camil/Documents/NetBeansProjects/SistemaLogistica/src/vista/VtnRastreo.java</file>
+            <file>file:/C:/Users/camil/Documents/NetBeansProjects/SistemaLogistica/src/controlador/PaqueteController.java</file>
+            <file>file:/C:/Users/camil/Documents/NetBeansProjects/SistemaLogistica/src/dao/PaqueteDAO.java</file>
+            <file>file:/C:/Users/camil/Documents/NetBeansProjects/SistemaLogistica/src/main/Main.java</file>
+            <file>file:/C:/Users/camil/Documents/NetBeansProjects/SistemaLogistica/src/modelo/Paquete.java</file>
+            <file>file:/C:/Users/camil/Documents/NetBeansProjects/SistemaLogistica/src/modelo/Usuario.java</file>
+            <file>file:/C:/Users/camil/Documents/NetBeansProjects/SistemaLogistica/src/vista/FrmMenuPrincipal.java</file>
         </group>
     </open-files>
 </project-private>

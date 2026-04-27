@@ -7,6 +7,7 @@ import modelo.Usuario;
 import conexion.ConexionBD;
 import javax.swing.JOptionPane;
 
+
 public class FrmLogin extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmLogin.class.getName());
@@ -135,49 +136,84 @@ public class FrmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        // TODO add your handling code here:
-        String user = txtUsuario.getText().trim();
-        String pass = new String(txtContrasena.getPassword());
+// TODO add your handling code here:
+        String usuario = txtUsuario.getText();
+        String password = new String(txtContrasena.getPassword());
 
-        if (user.isEmpty() || pass.isEmpty()) {
+        if (usuario.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor llene todos los campos");
             return;
         }
 
-        // Usamos el DAO en lugar de escribir SQL aquí
-        dao.UsuarioDAO uDao = new dao.UsuarioDAO();
-        modelo.Usuario usuarioLogueado = uDao.validarUsuario(user, pass);
+        try {
+            Connection con = ConexionBD.conectar();
 
-        if (usuarioLogueado != null) {
-            JOptionPane.showMessageDialog(this, "Bienvenido, " + usuarioLogueado.getNombre());
+            // 🔍 Intentar login
+            java.sql.CallableStatement cs = con.prepareCall("{CALL sp_validar_login(?, ?)}");
+            cs.setString(1, usuario);
+            cs.setString(2, password);
 
-            // Abrimos el menú principal pasando el nombre
-            FrmMenuPrincipal principal = new FrmMenuPrincipal(usuarioLogueado.getNombre());
-            principal.setVisible(true);
+            ResultSet rs = cs.executeQuery();
 
-            this.dispose(); // Cerramos el login
-        } else {
-            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
-            txtContrasena.setText("");
-            txtUsuario.requestFocus();
+            if (rs.next()) {
+                // ✔ Usuario existe
+                String nombre = rs.getString("username");
+                String rol = rs.getString("rol");
+
+                FrmMenuPrincipal principal = new FrmMenuPrincipal(nombre, rol);
+                principal.setVisible(true);
+                this.dispose();
+
+            } else {
+                // ❌ Usuario no existe → se registra automáticamente
+
+                java.sql.CallableStatement csInsert = con.prepareCall("{CALL sp_insertar_usuario(?, ?)}");
+                csInsert.setString(1, usuario);
+                csInsert.setString(2, password);
+                csInsert.execute();
+
+                JOptionPane.showMessageDialog(this, "Usuario registrado");
+
+                // 🔁 Login después de registrar
+                java.sql.CallableStatement cs2 = con.prepareCall("{CALL sp_validar_login(?, ?)}");
+                cs2.setString(1, usuario);
+                cs2.setString(2, password);
+
+                ResultSet rs2 = cs2.executeQuery();
+
+                if (rs2.next()) {
+                    String nombre = rs2.getString("username");
+                    String rol = rs2.getString("rol");
+
+                    FrmMenuPrincipal principal = new FrmMenuPrincipal(nombre, rol);
+                    principal.setVisible(true);
+                    this.dispose();
+                }
+            }
+
+            con.close();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
+    
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     public static void main(String args[]) {
 
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-
-        java.awt.EventQueue.invokeLater(() -> new FrmLogin().setVisible(true));
+    } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+        logger.log(java.util.logging.Level.SEVERE, null, ex);
     }
+
+    java.awt.EventQueue.invokeLater(() -> new FrmLogin().setVisible(true));
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;
