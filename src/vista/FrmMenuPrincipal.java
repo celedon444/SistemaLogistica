@@ -62,6 +62,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         itemRegistro = new javax.swing.JMenuItem();
         itemInventario = new javax.swing.JMenuItem();
         itemRastreo = new javax.swing.JMenuItem();
+        itemReportes = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -82,10 +83,8 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblUsuarioLogueado.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblUsuarioLogueado.setForeground(new java.awt.Color(0, 0, 0));
         lblUsuarioLogueado.setText("Usuario: [Nombre]");
 
-        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("© 2026 GoPack | Todos los derechos reservados");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -156,6 +155,10 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         itemRastreo.setText("Rastrear Paquete");
         itemRastreo.addActionListener(this::itemRastreoActionPerformed);
         menuOperaciones.add(itemRastreo);
+
+        itemReportes.setText("Reportes y Devoluciones");
+        itemReportes.addActionListener(this::itemReportesActionPerformed);
+        menuOperaciones.add(itemReportes);
 
         jMenuBar1.add(menuOperaciones);
 
@@ -266,6 +269,28 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         ventanaRastreo.setVisible(true);
     }//GEN-LAST:event_itemRastreoActionPerformed
 
+    private void itemReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemReportesActionPerformed
+        // TODO add your handling code here:
+        // 1. Verificamos si ya está abierta usando el ciclo que ya conoces
+        for (javax.swing.JInternalFrame frame : desktopContenedor.getAllFrames()) {
+            if (frame instanceof VtnReportes) {
+                frame.toFront(); // Si existe, la traemos al frente
+                return; // Salimos del método para no crear una nueva
+            }
+        }
+
+        // 2. Si no existe, la creamos
+        VtnReportes ventanaReportes = new VtnReportes();
+        
+       
+        
+        desktopContenedor.add(ventanaReportes);
+
+      
+
+        ventanaReportes.setVisible(true);
+    }//GEN-LAST:event_itemReportesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -297,6 +322,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemInventario;
     private javax.swing.JMenuItem itemRastreo;
     private javax.swing.JMenuItem itemRegistro;
+    private javax.swing.JMenuItem itemReportes;
     private javax.swing.JMenuItem itemSalir;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel11;
