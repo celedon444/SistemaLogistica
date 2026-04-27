@@ -37,7 +37,7 @@ public class VtnReportes extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbMotivoReporte = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -48,7 +48,7 @@ public class VtnReportes extends javax.swing.JInternalFrame {
         txtGuia = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtaDescripcion = new javax.swing.JTextArea();
         btnAdjuntar = new javax.swing.JButton();
         lblPrevisualizacion = new javax.swing.JLabel();
         lblRutaArchivo = new javax.swing.JLabel();
@@ -68,7 +68,7 @@ public class VtnReportes extends javax.swing.JInternalFrame {
 
         jLabel12.setText("© 2026 GoPack | Todos los derechos reservados");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar...", "El artículo tienes fallas o no funciona", "Descripción inexacta del sitio web", "Mejor precio disponible", "El pedido llegó tarde", "Piezas faltantes o rotas", "Recibí un articulo incorrecto" }));
+        cbMotivoReporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar...", "El artículo tienes fallas o no funciona", "Descripción inexacta del sitio web", "Mejor precio disponible", "El pedido llegó tarde", "Piezas faltantes o rotas", "Recibí un articulo incorrecto" }));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Selecciona un motivo:");
@@ -91,14 +91,12 @@ public class VtnReportes extends javax.swing.JInternalFrame {
         btnEnviarReporte.setText("Enviar");
         btnEnviarReporte.addActionListener(this::btnEnviarReporteActionPerformed);
 
-        txtGuia.setText("jTextField1");
-
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("Ingrese la guía del paquete:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtaDescripcion.setColumns(20);
+        txtaDescripcion.setRows(5);
+        jScrollPane1.setViewportView(txtaDescripcion);
 
         btnAdjuntar.setBackground(new java.awt.Color(0, 102, 255));
         btnAdjuntar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -134,18 +132,18 @@ public class VtnReportes extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel3)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel12))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(156, 156, 156)
-                                        .addComponent(lblRutaArchivo))
+                                        .addGap(152, 152, 152)
+                                        .addComponent(btnAdjuntar))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(137, 137, 137)
-                                        .addComponent(btnAdjuntar)))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel12))))
+                                        .addGap(174, 174, 174)
+                                        .addComponent(lblRutaArchivo)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -167,10 +165,10 @@ public class VtnReportes extends javax.swing.JInternalFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(lblPrevisualizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(83, 83, 83)
+                                            .addComponent(cbMotivoReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(84, 84, 84)
                                         .addComponent(btnEnviarReporte)))))
-                        .addGap(0, 101, Short.MAX_VALUE)))
+                        .addGap(0, 100, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -189,8 +187,8 @@ public class VtnReportes extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cbMotivoReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnEnviarReporte))))
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,7 +223,6 @@ public class VtnReportes extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         // 1. Crear el selector de archivos
         JFileChooser selector = new JFileChooser();
-
         // 2. Crear un filtro para que solo muestre imágenes
         FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("Imágenes (JPG, PNG)", "jpg", "png", "jpeg");
         selector.setFileFilter(filtroImagen);
@@ -239,9 +236,7 @@ public class VtnReportes extends javax.swing.JInternalFrame {
             // Obtener el archivo real que seleccionó
             File archivoSeleccionado = selector.getSelectedFile();
 
-            // Guardar la ruta absoluta en la etiqueta oculta para usarla después al guardar
-            lblRutaArchivo.setText(archivoSeleccionado.getAbsolutePath());
-
+            lblRutaArchivo.setText("Archivo adjunto");
             // ---- CÓDIGO PARA MOSTRAR LA PREVISUALIZACIÓN ----
             // Crear un ImageIcon con la ruta
             ImageIcon iconOriginal = new ImageIcon(archivoSeleccionado.getAbsolutePath());
@@ -260,8 +255,8 @@ public class VtnReportes extends javax.swing.JInternalFrame {
     // Método para dejar la ventana como nueva después de enviar
     private void limpiarFormulario() {
         txtGuia.setText(""); // Limpiar Guía
-        jComboBox1.setSelectedIndex(0); // Resetear Motivo
-        jTextArea1.setText(""); // Limpiar descripción
+        cbMotivoReporte.setSelectedIndex(0); // Resetear Motivo
+        txtaDescripcion.setText(""); // Limpiar descripción
         lblRutaArchivo.setText("No hay archivo");
         lblPrevisualizacion.setIcon(null);
         lblPrevisualizacion.setText("");
@@ -273,35 +268,24 @@ public class VtnReportes extends javax.swing.JInternalFrame {
         // 1. Validar campos (motivo, descripción, guía)
         // ...
 
+       
         // 2. Obtener la ruta de la imagen que guardamos en lblRutaArchivo
         String rutaOrigen = lblRutaArchivo.getText();
-
-        if (!rutaOrigen.equals("") && !rutaOrigen.equals("No se ha seleccionado archivo")) {
+        if(!txtGuia.getText().equals("") && !txtaDescripcion.getText().equals("") && cbMotivoReporte.getSelectedIndex() !=0 && lblPrevisualizacion.getIcon() !=null){
+            if (!rutaOrigen.equals("") && !rutaOrigen.equals("No se ha seleccionado archivo")) {
             try {
                 // 3. Crear una carpeta dentro de tu proyecto para guardar las fotos
-                File carpetaDestino = new File("src/evidencias");
-                if (!carpetaDestino.exists()) {
-                    carpetaDestino.mkdirs(); // Crea la carpeta si no existe
-                }
-
-                // 4. Crear el archivo de destino con un nombre único (ej: guia + tiempo actual)
-                String nombreArchivo = txtGuia.getText() + "_" + System.currentTimeMillis() + ".jpg";
-                File archivoDestino = new File(carpetaDestino, nombreArchivo);
-
-                // 5. COPIAR el archivo real de la PC del usuario a tu proyecto
-                java.nio.file.Files.copy(
-                        new File(rutaOrigen).toPath(),
-                        archivoDestino.toPath(),
-                        java.nio.file.StandardCopyOption.REPLACE_EXISTING
-                );
-
-                // 6. GUARDAR EN MYSQL la ruta relativa
-                String rutaParaBD = "src/evidencias/" + nombreArchivo;
 
                 // Aquí iría tu código SQL normal:
                 // "INSERT INTO reportes (guia, motivo, descripcion, ruta_evidencia) VALUES (?, ?, ?, ?)"
                 // Y pasas 'rutaParaBD' como el cuarto parámetro.
                 JOptionPane.showMessageDialog(this, "Reporte enviado con evidencia.");
+                txtGuia.setText(""); // Limpiar Guía
+                cbMotivoReporte.setSelectedIndex(0); // Resetear Motivo
+                txtaDescripcion.setText(""); // Limpiar descripción
+                lblRutaArchivo.setText("No hay archivo");
+                lblPrevisualizacion.setIcon(null);
+                lblPrevisualizacion.setText("");
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error al copiar la imagen: " + e.getMessage());
@@ -309,13 +293,17 @@ public class VtnReportes extends javax.swing.JInternalFrame {
         } else {
             // Enviar reporte sin imagen si así lo deseas, o exigir que se suba una.
         }
+        }
+        else{
+            JOptionPane.showMessageDialog(rootPane, "Ingrese todos lo campos");
+        }
     }//GEN-LAST:event_btnEnviarReporteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdjuntar;
     private javax.swing.JButton btnEnviarReporte;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cbMotivoReporte;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -327,9 +315,9 @@ public class VtnReportes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblPrevisualizacion;
     private javax.swing.JLabel lblRutaArchivo;
     private javax.swing.JTextField txtGuia;
+    private javax.swing.JTextArea txtaDescripcion;
     // End of variables declaration//GEN-END:variables
 }

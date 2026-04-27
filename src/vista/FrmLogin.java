@@ -148,7 +148,6 @@ public class FrmLogin extends javax.swing.JFrame {
         try {
             Connection con = ConexionBD.conectar();
 
-            // 🔍 Intentar login
             java.sql.CallableStatement cs = con.prepareCall("{CALL sp_validar_login(?, ?)}");
             cs.setString(1, usuario);
             cs.setString(2, password);
@@ -156,7 +155,7 @@ public class FrmLogin extends javax.swing.JFrame {
             ResultSet rs = cs.executeQuery();
 
             if (rs.next()) {
-                // ✔ Usuario existe
+                
                 String nombre = rs.getString("username");
                 String rol = rs.getString("rol");
 
@@ -165,7 +164,7 @@ public class FrmLogin extends javax.swing.JFrame {
                 this.dispose();
 
             } else {
-                // ❌ Usuario no existe → se registra automáticamente
+             
 
                 java.sql.CallableStatement csInsert = con.prepareCall("{CALL sp_insertar_usuario(?, ?)}");
                 csInsert.setString(1, usuario);
@@ -174,7 +173,7 @@ public class FrmLogin extends javax.swing.JFrame {
 
                 JOptionPane.showMessageDialog(this, "Usuario registrado");
 
-                // 🔁 Login después de registrar
+                
                 java.sql.CallableStatement cs2 = con.prepareCall("{CALL sp_validar_login(?, ?)}");
                 cs2.setString(1, usuario);
                 cs2.setString(2, password);
