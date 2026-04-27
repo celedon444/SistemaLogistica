@@ -22,9 +22,19 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         this.rol = rol;
         
         // Ahora 'nombre' ya funciona porque viene desde el paréntesis
-        lblUsuarioLogueado.setText("Usuario conectado: " + nombre);
+        lblUsuarioLogueado.setText("Usuario conectado: " + nombre + " (" + rol +")");
         setLocationRelativeTo(null);
+        validarAdmin();
+        
+        
 
+    }
+    
+    public void validarAdmin(){
+        if(!rol.equals("ADMIN")){
+            itemInventario.setVisible(false);
+            itemRegistro.setVisible(false);
+        }
     }
 
     /**
@@ -167,6 +177,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
     private void itemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarSesionActionPerformed
         // TODO add your handling code here:
+        
         int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
                 this,
                 "¿Estás seguro de que deseas cerrar la sesión?",

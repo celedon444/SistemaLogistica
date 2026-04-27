@@ -224,19 +224,19 @@ public class VtnRastreo extends javax.swing.JInternalFrame {
 
     private void actualizarBarra(String estado) {
         switch (estado) {
-            case "EN BODEGA" -> {
+            case "EN BODEGA": {
                 progresoEnvio.setValue(25);
                 progresoEnvio.setForeground(Color.BLACK);
             }
-            case "EN DESPACHO" -> {
+            case "EN DESPACHO": {
                 progresoEnvio.setValue(50);
                 progresoEnvio.setForeground(Color.BLACK);
             }
-            case "EN RUTA" -> {
+            case "EN RUTA": {
                 progresoEnvio.setValue(75);
                 progresoEnvio.setForeground(Color.BLACK);
             }
-            case "ENTREGADO" -> {
+            case "ENTREGADO": {
                 progresoEnvio.setValue(100);
                 progresoEnvio.setForeground(Color.BLACK);
             }
