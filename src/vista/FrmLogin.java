@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import modelo.Usuario;
 import conexion.ConexionBD;
+import conexion.ConexionInfo;
+import java.sql.DriverManager;
 import javax.swing.JOptionPane;
-
 
 public class FrmLogin extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmLogin.class.getName());
+    ConexionInfo info;
 
     public FrmLogin() {
         initComponents();
@@ -18,6 +20,7 @@ public class FrmLogin extends javax.swing.JFrame {
         txtUsuario.setText("");
         txtContrasena.setText("");
         setLocationRelativeTo(null);
+        info = new ConexionInfo();
     }
 
     @SuppressWarnings("unchecked")
@@ -145,17 +148,15 @@ public class FrmLogin extends javax.swing.JFrame {
             return;
         }
 
-        try {
-            Connection con = ConexionBD.conectar();
-
-            java.sql.CallableStatement cs = con.prepareCall("{CALL sp_validar_login(?, ?)}");
-            cs.setString(1, usuario);
-            cs.setString(2, password);
+        try (Connection con = DriverManager.getConnection(info.getUrl(),info.getUsername(),info.getPassword())) {
+                    PreparedStatement cs = con.prepareCall("{CALL sp_validar_login(?, ?)}");
+                    cs.setString(1, usuario);
+                    cs.setString(2, password);
 
             ResultSet rs = cs.executeQuery();
 
             if (rs.next()) {
-                
+
                 String nombre = rs.getString("username");
                 String rol = rs.getString("rol");
 
@@ -164,21 +165,19 @@ public class FrmLogin extends javax.swing.JFrame {
                 this.dispose();
 
             } else {
-             
 
-                java.sql.CallableStatement csInsert = con.prepareCall("{CALL sp_insertar_usuario(?, ?)}");
+                PreparedStatement csInsert = con.prepareCall("{CALL sp_insertar_usuario(?, ?)}");
                 csInsert.setString(1, usuario);
                 csInsert.setString(2, password);
                 csInsert.execute();
 
                 JOptionPane.showMessageDialog(this, "Usuario registrado");
 
-                
-                java.sql.CallableStatement cs2 = con.prepareCall("{CALL sp_validar_login(?, ?)}");
-                cs2.setString(1, usuario);
-                cs2.setString(2, password);
-
-                ResultSet rs2 = cs2.executeQuery();
+                String sql = "CALL sp_validar_login(?, ?)";
+                PreparedStatement ps2 = con.prepareStatement(sql);
+                ps2.setString(1, usuario);
+                ps2.setString(2, password);
+                ResultSet rs2 = ps2.executeQuery();
 
                 if (rs2.next()) {
                     String nombre = rs2.getString("username");
@@ -190,29 +189,27 @@ public class FrmLogin extends javax.swing.JFrame {
                 }
             }
 
-            con.close();
-
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: Usuario o contraseña son incorrectos");
         }
-    
+
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     public static void main(String args[]) {
 
-    try {
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
             }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-    } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-        logger.log(java.util.logging.Level.SEVERE, null, ex);
-    }
 
-    java.awt.EventQueue.invokeLater(() -> new FrmLogin().setVisible(true));
-}
+        java.awt.EventQueue.invokeLater(() -> new FrmLogin().setVisible(true));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;

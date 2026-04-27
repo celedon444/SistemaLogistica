@@ -15,6 +15,17 @@ CREATE TABLE usuarios (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+CREATE TABLE reportes (
+    id_reporte INT AUTO_INCREMENT PRIMARY KEY,
+    guia_paquete VARCHAR(20) NOT NULL,
+    motivo VARCHAR(900) NOT NULL,
+    descripcion VARCHAR(300) NOT NULL,
+    ruta_evidencia VARCHAR(250),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estado ENUM('Pendiente', 'En Revisión', 'Resuelto') DEFAULT 'Pendiente'
+);
+
 -- 2. TABLA DE AUDITORÍA
 -- Registra automáticamente cambios de roles o datos sensibles en usuarios.
 CREATE TABLE auditoria_usuarios (
@@ -43,6 +54,47 @@ CREATE TABLE paquetes (
 -- =============================================
 -- TRIGGERS
 -- =============================================
+DELIMITER //
+
+CREATE PROCEDURE insertar_reporte(
+    IN r_guia_paquete VARCHAR(50),
+    IN r_motivo VARCHAR(900),
+    IN r_descripcion VARCHAR(300),
+    IN r_ruta_evidencia VARCHAR(250)
+)
+BEGIN
+    INSERT INTO reportes (
+        guia_paquete,
+        motivo,
+        descripcion,
+        ruta_evidencia
+    )
+    VALUES (
+        r_guia_paquete,
+        r_motivo,
+        r_descripcion,
+        r_ruta_evidencia
+    );
+END //
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_obtener_reportes()
+BEGIN
+    SELECT 
+        id_reporte,
+        guia_paquete,
+        motivo,
+        descripcion,
+        ruta_evidencia,
+        fecha_registro,
+        estado
+    FROM reportes
+    ORDER BY id_reporte DESC;
+END //
+
+DELIMITER ;
 
 DELIMITER //
 -- Trigger para auditar cambios en la tabla de usuarios
@@ -72,7 +124,8 @@ CREATE PROCEDURE sp_validar_login(
 BEGIN
     SELECT id_usuario, username, rol 
     FROM usuarios 
-    WHERE username = p_username AND password = p_password;
+        WHERE BINARY username = p_username 
+       AND BINARY password = p_password;
 END //
 
 -- 2. Registro de Usuario (Rol USER por defecto)
@@ -84,7 +137,9 @@ BEGIN
     INSERT INTO usuarios(username, password, rol)
     VALUES (u_username, u_password, 'USER');
 END //
+delimiter ;
 
+delimiter //
 -- 3. REGISTRO DE PAQUETE (Mapeado exactamente a tu VtnRegistroPaquetes)
 CREATE PROCEDURE sp_registrar_paquete(
     IN p_guia VARCHAR(20),
@@ -125,9 +180,7 @@ INSERT INTO usuarios (username, password, rol) VALUES ('Camilo12', '456', 'ADMIN
 
 -- Registro de prueba inicial
 CALL sp_registrar_paquete('GP-001', 'Juan Valdez', 'Carlos Ruiz', 'Av. Central 123', 5.2, '2026-04-26', 'Nacional', 'En Bodega');
-
-
-
-
-
+select * from reportes;
+select * from usuarios;
 select * from paquetes;
+

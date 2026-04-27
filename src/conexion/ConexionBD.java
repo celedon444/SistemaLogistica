@@ -12,7 +12,6 @@ public class ConexionBD {
 
         try {
             ConexionInfo info = new ConexionInfo();
-
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(
                 info.getUrl(),

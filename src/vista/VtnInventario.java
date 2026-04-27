@@ -20,7 +20,7 @@ public class VtnInventario extends javax.swing.JInternalFrame {
 
     public VtnInventario() {
         initComponents();
-        mostrarDatos(); // Esto cargará los paquetes registrados automáticamente
+        mostrarDatos(); 
     }
 
     public void mostrarDatos() {

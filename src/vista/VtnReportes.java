@@ -5,11 +5,16 @@
 package vista;
 
 // Importaciones necesarias
+import conexion.ConexionInfo;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.io.File;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,11 +23,15 @@ import javax.swing.JOptionPane;
  */
 public class VtnReportes extends javax.swing.JInternalFrame {
 
+    File archivoSeleccionado;
+    ConexionInfo info;
+
     /**
      * Creates new form VtnReportes
      */
     public VtnReportes() {
         initComponents();
+        info = new ConexionInfo();
     }
 
     /**
@@ -234,7 +243,7 @@ public class VtnReportes extends javax.swing.JInternalFrame {
         if (respuesta == JFileChooser.APPROVE_OPTION) {
 
             // Obtener el archivo real que seleccionó
-            File archivoSeleccionado = selector.getSelectedFile();
+            archivoSeleccionado = selector.getSelectedFile();
 
             lblRutaArchivo.setText("Archivo adjunto");
             // ---- CÓDIGO PARA MOSTRAR LA PREVISUALIZACIÓN ----
@@ -252,14 +261,33 @@ public class VtnReportes extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnAdjuntarActionPerformed
 
-    // Método para dejar la ventana como nueva después de enviar
     private void limpiarFormulario() {
-        txtGuia.setText(""); // Limpiar Guía
-        cbMotivoReporte.setSelectedIndex(0); // Resetear Motivo
-        txtaDescripcion.setText(""); // Limpiar descripción
+        txtGuia.setText("");
+        cbMotivoReporte.setSelectedIndex(0);
+        txtaDescripcion.setText("");
         lblRutaArchivo.setText("No hay archivo");
         lblPrevisualizacion.setIcon(null);
         lblPrevisualizacion.setText("");
+    }
+
+    private void guardarReportes() {
+        try (Connection con = DriverManager.getConnection(info.getUrl(), info.getUsername(), info.getPassword())) {
+            String ruta = null;
+
+            if (archivoSeleccionado != null) {
+                ruta = archivoSeleccionado.getAbsolutePath();
+            }
+
+            PreparedStatement prm = con.prepareStatement("CALL insertar_reporte(?, ?, ?, ?)");
+            prm.setString(1, txtGuia.getText());
+            prm.setString(2, cbMotivoReporte.getSelectedItem().toString());
+            prm.setString(3, txtaDescripcion.getText());
+            prm.setString(4, ruta);
+            prm.execute();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Error: " + e.toString());
+        }
     }
 
 
@@ -268,35 +296,21 @@ public class VtnReportes extends javax.swing.JInternalFrame {
         // 1. Validar campos (motivo, descripción, guía)
         // ...
 
-       
         // 2. Obtener la ruta de la imagen que guardamos en lblRutaArchivo
         String rutaOrigen = lblRutaArchivo.getText();
-        if(!txtGuia.getText().equals("") && !txtaDescripcion.getText().equals("") && cbMotivoReporte.getSelectedIndex() !=0 && lblPrevisualizacion.getIcon() !=null){
-            if (!rutaOrigen.equals("") && !rutaOrigen.equals("No se ha seleccionado archivo")) {
-            try {
-                // 3. Crear una carpeta dentro de tu proyecto para guardar las fotos
+        if (!txtGuia.getText().equals("")
+                && !txtaDescripcion.getText().equals("")
+                && cbMotivoReporte.getSelectedIndex() != 0 && archivoSeleccionado != null) {
 
-                // Aquí iría tu código SQL normal:
-                // "INSERT INTO reportes (guia, motivo, descripcion, ruta_evidencia) VALUES (?, ?, ?, ?)"
-                // Y pasas 'rutaParaBD' como el cuarto parámetro.
-                JOptionPane.showMessageDialog(this, "Reporte enviado con evidencia.");
-                txtGuia.setText(""); // Limpiar Guía
-                cbMotivoReporte.setSelectedIndex(0); // Resetear Motivo
-                txtaDescripcion.setText(""); // Limpiar descripción
-                lblRutaArchivo.setText("No hay archivo");
-                lblPrevisualizacion.setIcon(null);
-                lblPrevisualizacion.setText("");
+            guardarReportes();
+            JOptionPane.showMessageDialog(this, "Reporte enviado");
 
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al copiar la imagen: " + e.getMessage());
-            }
+            limpiarFormulario();
+
         } else {
-            // Enviar reporte sin imagen si así lo deseas, o exigir que se suba una.
+            JOptionPane.showMessageDialog(this, "Ingrese todos los campos");
         }
-        }
-        else{
-            JOptionPane.showMessageDialog(rootPane, "Ingrese todos lo campos");
-        }
+
     }//GEN-LAST:event_btnEnviarReporteActionPerformed
 
 

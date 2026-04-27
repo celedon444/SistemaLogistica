@@ -12,7 +12,7 @@ public class PaqueteController {
     private PaqueteDAO dao;
 
     public PaqueteController() {
-        this.dao = new PaqueteDAO();
+        dao = new PaqueteDAO();
     }
 
     /**
@@ -20,7 +20,6 @@ public class PaqueteController {
      */
     public DefaultTableModel consultarInventario() {
         String[] titulos = {"Guía", "Remitente", "Destinatario", "Dirección", "Peso (kg)", "Tipo", "Estado", "Fecha Registro"};
-
         DefaultTableModel modeloTabla = new DefaultTableModel(null, titulos) {
             @Override
             public boolean isCellEditable(int row, int column) {

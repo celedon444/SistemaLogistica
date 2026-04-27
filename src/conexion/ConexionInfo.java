@@ -10,7 +10,7 @@ package conexion;
  */
 public class ConexionInfo {
     
-     private String url = "jdbc:mysql://localhost/sistema_logistica";
+     private String url = "jdbc:mysql://localhost:3306/sistema_logistica";
     private String username = "root";
     private String password = "MyNewPass1";
 
