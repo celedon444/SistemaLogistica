@@ -33,7 +33,11 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     public void validarAdmin(){
         if(!rol.equals("ADMIN")){
             itemInventario.setVisible(false);
-            itemRegistro.setVisible(false);
+            itemRegistro.setVisible(false);    
+        }
+        
+        else {
+            itemReportes.setVisible(false); 
         }
     }
 
