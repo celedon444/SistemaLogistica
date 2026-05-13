@@ -16,6 +16,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
+import controlador.GestionReporteController;
+import controlador.PaqueteController;
 
 /**
  *
@@ -25,6 +27,9 @@ public class VtnReportes extends javax.swing.JInternalFrame {
 
     File archivoSeleccionado;
     ConexionInfo info;
+
+    GestionReporteController control = new GestionReporteController();
+    PaqueteController paqueteControl = new PaqueteController();
 
     /**
      * Creates new form VtnReportes
@@ -284,7 +289,7 @@ public class VtnReportes extends javax.swing.JInternalFrame {
             prm.setString(3, txtaDescripcion.getText());
             prm.setString(4, ruta);
             prm.execute();
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "Error: " + e.toString());
         }
@@ -292,24 +297,59 @@ public class VtnReportes extends javax.swing.JInternalFrame {
 
 
     private void btnEnviarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarReporteActionPerformed
+
         // TODO add your handling code here:
-        // 1. Validar campos (motivo, descripción, guía)
-        // ...
+        // Obtener guía
+        String guia = txtGuia.getText().trim();
 
         // 2. Obtener la ruta de la imagen que guardamos en lblRutaArchivo
         String rutaOrigen = lblRutaArchivo.getText();
+
         if (!txtGuia.getText().equals("")
                 && !txtaDescripcion.getText().equals("")
-                && cbMotivoReporte.getSelectedIndex() != 0 && archivoSeleccionado != null) {
+                && cbMotivoReporte.getSelectedIndex() != 0
+                && archivoSeleccionado != null) {
 
+            // VALIDAR SI LA GUÍA EXISTE
+            if (!paqueteControl.existeGuia(guia)) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "La guía ingresada no existe."
+                );
+
+                return;
+            }
+
+            // VALIDAR SI YA EXISTE UN REPORTE ACTIVO
+            if (control.existeReporteActivo(guia)) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Esta guía ya tiene un reporte activo."
+                );
+
+                return;
+            }
+
+            // GUARDAR REPORTE
             guardarReportes();
-            JOptionPane.showMessageDialog(this, "Reporte enviado");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Reporte enviado"
+            );
 
             limpiarFormulario();
 
         } else {
-            JOptionPane.showMessageDialog(this, "Ingrese todos los campos");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Complete todos los campos"
+            );
         }
+
 
     }//GEN-LAST:event_btnEnviarReporteActionPerformed
 

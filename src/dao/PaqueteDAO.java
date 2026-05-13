@@ -14,8 +14,7 @@ public class PaqueteDAO {
         // QUITAMOS 'fecha_registro' del INSERT porque ahora MySQL usa 'fecha_sistema' automáticamente
         String sql = "INSERT INTO paquetes (guia_rastreo, ciudad_origen, ciudad_destino, remitente, destinatario, direccion_entrega, peso, tipo_envio, estado, ubicacion_actual) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = ConexionBD.conectar();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionBD.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, paquete.getGuia());
             ps.setString(2, paquete.getCiudadOrigen());
@@ -42,9 +41,7 @@ public class PaqueteDAO {
         List<Paquete> lista = new ArrayList<>();
         String sql = "SELECT * FROM paquetes";
 
-        try (Connection con = ConexionBD.conectar();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = ConexionBD.conectar(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Paquete p = new Paquete();
@@ -58,7 +55,7 @@ public class PaqueteDAO {
                 p.setTipo(rs.getString("tipo_envio"));
                 p.setEstado(rs.getString("estado"));
                 p.setUbicacionActual(rs.getString("ubicacion_actual"));
-                
+
                 // AQUÍ ESTÁ EL CAMBIO: Leemos la fecha como Timestamp
                 p.setFechaSistema(rs.getTimestamp("fecha_registro"));
 
@@ -73,16 +70,15 @@ public class PaqueteDAO {
     // MÉTODO 3: Buscar uno solo (Lo necesitaremos para la vista de Rastreo)
     public Paquete buscarPorGuia(String guia) {
         String sql = "SELECT * FROM paquetes WHERE guia_rastreo = ?";
-        try (Connection con = ConexionBD.conectar();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            
+        try (Connection con = ConexionBD.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
+
             ps.setString(1, guia);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Paquete p = new Paquete();
-                    p.setGuia(rs.getString("guia_rastreo"));            
+                    p.setGuia(rs.getString("guia_rastreo"));
                     p.setCiudadOrigen(rs.getString("ciudad_origen"));
-                    p.setCiudadDestino(rs.getString("ciudad_destino"));                   
+                    p.setCiudadDestino(rs.getString("ciudad_destino"));
                     p.setRemitente(rs.getString("remitente"));
                     p.setDestinatario(rs.getString("destinatario"));
                     p.setDireccion(rs.getString("direccion_entrega"));
@@ -99,8 +95,8 @@ public class PaqueteDAO {
         }
         return null;
     }
-    
-     public boolean actualizarEstado(
+
+    public boolean actualizarEstado(
             String guia,
             String nuevoEstado,
             String nuevaUbicacion) {
@@ -109,8 +105,7 @@ public class PaqueteDAO {
                 + "SET estado = ?, ubicacion_actual = ? "
                 + "WHERE guia_rastreo = ?";
 
-        try (Connection con = ConexionBD.conectar();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionBD.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, nuevoEstado);
             ps.setString(2, nuevaUbicacion);
@@ -124,6 +119,33 @@ public class PaqueteDAO {
 
             System.out.println("Error actualizar estado: "
                     + e.getMessage());
+
+            return false;
+        }
+    }
+
+    public boolean existeGuia(String guia) {
+
+        String sql
+                = "SELECT guia_rastreo "
+                + "FROM paquetes "
+                + "WHERE guia_rastreo = ?";
+
+        try (Connection con = ConexionBD.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, guia);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                    "Error verificando guía: "
+                    + e.getMessage()
+            );
 
             return false;
         }

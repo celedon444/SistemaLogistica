@@ -221,4 +221,13 @@ public class PaqueteController {
                 ubicacion
         );
     }
+
+    /**
+     * VALIDAR SI UNA GUÍA EXISTE
+     */
+    public boolean existeGuia(String guia) {
+
+        Paquete paquete = dao.buscarPorGuia(guia);
+        return paquete != null;
+    }
 }

@@ -27,9 +27,14 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     }
 
     public void validarAdmin() {
+        // SI EL USUARIO NO ES ADMIN
         if (!rol.equals("ADMIN")) {
+            
+            // Ocultar opciones solo para ADMIN
             itemInventario.setVisible(false);
             itemRegistro.setVisible(false);
+            itemActualizarEstadoPaquete.setVisible(false);
+            itemGestionReportes.setVisible(false);
         } else {
             itemReportes.setVisible(false);
         }
@@ -62,6 +67,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         itemRastreo = new javax.swing.JMenuItem();
         itemReportes = new javax.swing.JMenuItem();
         itemActualizarEstadoPaquete = new javax.swing.JMenuItem();
+        itemGestionReportes = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -162,6 +168,10 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         itemActualizarEstadoPaquete.setText("Actualizar Estado Paquete");
         itemActualizarEstadoPaquete.addActionListener(this::itemActualizarEstadoPaqueteActionPerformed);
         menuOperaciones.add(itemActualizarEstadoPaquete);
+
+        itemGestionReportes.setText("Gestionar Reportes");
+        itemGestionReportes.addActionListener(this::itemGestionReportesActionPerformed);
+        menuOperaciones.add(itemGestionReportes);
 
         jMenuBar1.add(menuOperaciones);
 
@@ -293,6 +303,27 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_itemActualizarEstadoPaqueteActionPerformed
 
+    private void itemGestionReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionReportesActionPerformed
+        // TODO add your handling code here:
+        for (javax.swing.JInternalFrame frame
+                : desktopContenedor.getAllFrames()) {
+
+            if (frame instanceof VtnGestionReportes) {
+
+                frame.toFront();
+
+                return;
+            }
+        }
+
+        VtnGestionReportes ventana
+                = new VtnGestionReportes();
+
+        desktopContenedor.add(ventana);
+
+        ventana.setVisible(true);
+    }//GEN-LAST:event_itemGestionReportesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -322,6 +353,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane desktopContenedor;
     private javax.swing.JMenuItem itemActualizarEstadoPaquete;
     private javax.swing.JMenuItem itemCerrarSesion;
+    private javax.swing.JMenuItem itemGestionReportes;
     private javax.swing.JMenuItem itemInventario;
     private javax.swing.JMenuItem itemRastreo;
     private javax.swing.JMenuItem itemRegistro;
