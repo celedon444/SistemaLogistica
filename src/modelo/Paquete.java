@@ -13,6 +13,9 @@ public class Paquete {
     private double peso;
     private String tipo;
     private String estado;
+    private String ciudadOrigen;
+    private String ciudadDestino;
+    private String ubicacionActual;
     
     // Cambiamos 'String fecha' por 'Timestamp fechaSistema' para poder hacer cálculos
     private Timestamp fechaSistema; 
@@ -22,7 +25,7 @@ public class Paquete {
     }
 
     // 2. Constructor con parámetros (Actualizado con Timestamp)
-    public Paquete(String guia, String remitente, String destinatario, String direccion, double peso, String tipo, String estado, Timestamp fechaSistema) {
+    public Paquete(String guia, String remitente, String destinatario, String direccion, double peso, String tipo, String  estado, String ubicacionActual, Timestamp fechaSistema) {
         this.guia = guia;
         this.remitente = remitente;
         this.destinatario = destinatario;
@@ -30,6 +33,7 @@ public class Paquete {
         this.peso = peso;
         this.tipo = tipo;
         this.estado = estado;
+        this.ubicacionActual = ubicacionActual;
         this.fechaSistema = fechaSistema;
     }
 
@@ -52,8 +56,17 @@ public class Paquete {
     public String getTipo() { return tipo; }
     public void setTipo(String tipo) { this.tipo = tipo; }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public String   getEstado() { return estado; }
+    public void setEstado(String  estado) { this.estado = estado; }
+    
+    public String getCiudadOrigen() { return ciudadOrigen; }
+    public void setCiudadOrigen(String ciudadOrigen) { this.ciudadOrigen = ciudadOrigen; }
+
+    public String getCiudadDestino() { return ciudadDestino; }
+    public void setCiudadDestino(String ciudadDestino) { this.ciudadDestino = ciudadDestino; }
+    
+    public String getUbicacionActual() { return ubicacionActual; }
+    public void setUbicacionActual(String ubicacionActual) { this.ubicacionActual = ubicacionActual; }
 
     // NUEVO GETTER Y SETTER PARA EL TIEMPO
     public Timestamp getFechaSistema() { return fechaSistema; }

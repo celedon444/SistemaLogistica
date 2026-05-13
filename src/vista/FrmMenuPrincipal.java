@@ -1,4 +1,3 @@
-
 package vista;
 
 /**
@@ -12,32 +11,27 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form FrmMenuPrincipal
      */
-    
     String nombre;
     String rol;
-    
+
     public FrmMenuPrincipal(String nombre, String rol) { // <--- Agregamos String nombre aquí
         initComponents();
         this.nombre = nombre;
         this.rol = rol;
-        
+
         // Ahora 'nombre' ya funciona porque viene desde el paréntesis
-        lblUsuarioLogueado.setText("Usuario conectado: " + nombre + " (" + rol +")");
+        lblUsuarioLogueado.setText("Usuario conectado: " + nombre + " (" + rol + ")");
         setLocationRelativeTo(null);
         validarAdmin();
-        
-        
 
     }
-    
-    public void validarAdmin(){
-        if(!rol.equals("ADMIN")){
+
+    public void validarAdmin() {
+        if (!rol.equals("ADMIN")) {
             itemInventario.setVisible(false);
-            itemRegistro.setVisible(false);    
-        }
-        
-        else {
-            itemReportes.setVisible(false); 
+            itemRegistro.setVisible(false);
+        } else {
+            itemReportes.setVisible(false);
         }
     }
 
@@ -67,6 +61,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         itemInventario = new javax.swing.JMenuItem();
         itemRastreo = new javax.swing.JMenuItem();
         itemReportes = new javax.swing.JMenuItem();
+        itemActualizarEstadoPaquete = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -148,11 +143,11 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         menuOperaciones.setText("Operaciones");
 
-        itemRegistro.setText("Registrar paquete");
+        itemRegistro.setText("Registrar Paquete");
         itemRegistro.addActionListener(this::itemRegistroActionPerformed);
         menuOperaciones.add(itemRegistro);
 
-        itemInventario.setText("Ver inventario ");
+        itemInventario.setText("Ver Inventario ");
         itemInventario.addActionListener(this::itemInventarioActionPerformed);
         menuOperaciones.add(itemInventario);
 
@@ -163,6 +158,10 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         itemReportes.setText("Reportes y Devoluciones");
         itemReportes.addActionListener(this::itemReportesActionPerformed);
         menuOperaciones.add(itemReportes);
+
+        itemActualizarEstadoPaquete.setText("Actualizar Estado Paquete");
+        itemActualizarEstadoPaquete.addActionListener(this::itemActualizarEstadoPaqueteActionPerformed);
+        menuOperaciones.add(itemActualizarEstadoPaquete);
 
         jMenuBar1.add(menuOperaciones);
 
@@ -184,7 +183,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
     private void itemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarSesionActionPerformed
         // TODO add your handling code here:
-        
+
         int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
                 this,
                 "¿Estás seguro de que deseas cerrar la sesión?",
@@ -218,7 +217,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         VtnRegistroPaquetes ventana = new VtnRegistroPaquetes();
         desktopContenedor.add(ventana);
 
-
         ventana.setVisible(true);
     }//GEN-LAST:event_itemRegistroActionPerformed
 
@@ -233,8 +231,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         VtnInventario vtn = new VtnInventario();
         desktopContenedor.add(vtn);
-
-   
 
         vtn.setVisible(true);
     }//GEN-LAST:event_itemInventarioActionPerformed
@@ -263,12 +259,8 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         // 2. Si no existe, la creamos
         VtnRastreo ventanaRastreo = new VtnRastreo();
-        
-       
-        
-        desktopContenedor.add(ventanaRastreo);
 
-      
+        desktopContenedor.add(ventanaRastreo);
 
         ventanaRastreo.setVisible(true);
     }//GEN-LAST:event_itemRastreoActionPerformed
@@ -285,15 +277,21 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         // 2. Si no existe, la creamos
         VtnReportes ventanaReportes = new VtnReportes();
-        
-       
-        
-        desktopContenedor.add(ventanaReportes);
 
-      
+        desktopContenedor.add(ventanaReportes);
 
         ventanaReportes.setVisible(true);
     }//GEN-LAST:event_itemReportesActionPerformed
+
+    private void itemActualizarEstadoPaqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemActualizarEstadoPaqueteActionPerformed
+        // TODO add your handling code here:
+        VtnActualizarEstado ventana
+                = new VtnActualizarEstado();
+
+        desktopContenedor.add(ventana);
+
+        ventana.setVisible(true);
+    }//GEN-LAST:event_itemActualizarEstadoPaqueteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -317,11 +315,12 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmLogin().setVisible(true)); 
+        java.awt.EventQueue.invokeLater(() -> new FrmLogin().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktopContenedor;
+    private javax.swing.JMenuItem itemActualizarEstadoPaquete;
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemInventario;
     private javax.swing.JMenuItem itemRastreo;

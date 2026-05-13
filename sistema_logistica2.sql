@@ -41,14 +41,27 @@ CREATE TABLE auditoria_usuarios (
 CREATE TABLE paquetes (
     id_paquete INT AUTO_INCREMENT PRIMARY KEY,
     guia_rastreo VARCHAR(20) UNIQUE NOT NULL,
+    ciudad_origen VARCHAR(100),
+	ciudad_destino VARCHAR(100),
     remitente VARCHAR(100) NOT NULL,
     destinatario VARCHAR(100) NOT NULL,
     direccion_entrega TEXT,
     peso DOUBLE NOT NULL,
-    fecha_registro VARCHAR(50), -- Captura la fecha que aparece en tu Form
     tipo_envio VARCHAR(50),
-	estado VARCHAR(50) DEFAULT 'EN BODEGA',
-    fecha_sistema TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Fecha interna del servidor
+    estado VARCHAR(50) DEFAULT 'EN BODEGA',
+    ubicacion_actual VARCHAR(100),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE movimientos_paquete (
+    id_movimiento INT AUTO_INCREMENT PRIMARY KEY,
+    guia_rastreo VARCHAR(50),
+    estado VARCHAR(50),
+    ubicacion VARCHAR(100),
+    descripcion VARCHAR(255),
+    fecha_movimiento TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (guia_rastreo)
+    REFERENCES paquetes(guia_rastreo)
 );
 
 -- =============================================
@@ -141,25 +154,49 @@ delimiter ;
 
 delimiter //
 -- 3. REGISTRO DE PAQUETE (Mapeado exactamente a tu VtnRegistroPaquetes)
+
 CREATE PROCEDURE sp_registrar_paquete(
     IN p_guia VARCHAR(20),
+    IN p_ciudad_origen VARCHAR(100),
+    IN p_ciudad_destino VARCHAR(100),
     IN p_remitente VARCHAR(100),
     IN p_destinatario VARCHAR(100),
     IN p_direccion TEXT,
     IN p_peso DOUBLE,
-    IN p_fecha_form VARCHAR(50), -- Dato del JTextField de tu GUI
-    IN p_tipo VARCHAR(50),       -- Dato del JComboBox
-    IN p_estado VARCHAR(50)      -- Dato del JComboBox
+    IN p_fecha_form VARCHAR(50),
+    IN p_tipo VARCHAR(50),
+    IN p_estado VARCHAR(50),
+    IN p_ubicacion_actual VARCHAR(100)
 )
 BEGIN
+
     INSERT INTO paquetes(
-        guia_rastreo, remitente, destinatario, direccion_entrega, 
-        peso, fecha_registro, tipo_envio, estado
+        guia_rastreo,
+        ciudad_origen,
+        ciudad_destino,
+        remitente,
+        destinatario,
+        direccion_entrega,
+        peso,
+        fecha_registro,
+        tipo_envio,
+        estado,
+        ubicacion_actual
     )
     VALUES (
-        p_guia, p_remitente, p_destinatario, p_direccion, 
-        p_peso, p_fecha_form, p_tipo, p_estado
+        p_guia,
+        p_ciudad_origen,
+        p_ciudad_destino,
+        p_remitente,
+        p_destinatario,
+        p_direccion,
+        p_peso,
+        p_fecha_form,
+        p_tipo,
+        p_estado,
+        p_ubicacion_actual
     );
+    
 END //
 
 -- 4. Consultas Generales
@@ -179,8 +216,9 @@ INSERT INTO usuarios (username, password, rol) VALUES ('Camilo11', '123', 'ADMIN
 INSERT INTO usuarios (username, password, rol) VALUES ('Camilo12', '456', 'ADMIN');
 
 -- Registro de prueba inicial
-CALL sp_registrar_paquete('GP-001', 'Juan Valdez', 'Carlos Ruiz', 'Av. Central 123', 5.2, '2026-04-26', 'Nacional', 'En Bodega');
+CALL sp_registrar_paquete('CF002', 'Medellín', 'Santa Marta', 'Westcol', 'Camilo Celedón', 'Los Almendros', 5.2, '2026-04-26', 'Pesado', 'En Bodega', 'Medellín');
 select * from reportes;
 select * from usuarios;
 select * from paquetes;
+SELECT * FROM movimientos_paquete;
 

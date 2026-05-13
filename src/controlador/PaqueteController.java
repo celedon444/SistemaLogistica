@@ -1,26 +1,49 @@
 package controlador;
 
 import dao.PaqueteDAO;
+import dao.MovimientoDAO;
 import modelo.Paquete;
+import modelo.MovimientoPaquete;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
-import java.sql.Timestamp; // <--- NUEVO: Para manejar el tiempo exacto
+import java.sql.Timestamp;
 
 public class PaqueteController {
 
     private PaqueteDAO dao;
+    private MovimientoDAO movimientoDAO;
 
+    // CONSTRUCTOR
     public PaqueteController() {
+
         dao = new PaqueteDAO();
+
+        movimientoDAO = new MovimientoDAO();
     }
 
     /**
-     * Método para el Inventario (Actualizado para mostrar fecha de sistema)
+     * CONSULTAR INVENTARIO
      */
     public DefaultTableModel consultarInventario() {
-        String[] titulos = {"Guía", "Remitente", "Destinatario", "Dirección", "Peso (kg)", "Tipo", "Estado", "Fecha Registro"};
-        DefaultTableModel modeloTabla = new DefaultTableModel(null, titulos) {
+
+        String[] titulos = {
+            "Guía",
+            "Ciudad Origen",
+            "Ciudad Destino",
+            "Remitente",
+            "Destinatario",
+            "Dirección",
+            "Peso (kg)",
+            "Tipo",
+            "Estado",
+            "Ubicación Actual",
+            "Fecha Registro"
+        };
+
+        DefaultTableModel modeloTabla
+                = new DefaultTableModel(null, titulos) {
+
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -29,17 +52,22 @@ public class PaqueteController {
 
         List<Paquete> lista = dao.listarTodos();
 
-        Object[] fila = new Object[8];
+        Object[] fila = new Object[11];
+
         for (Paquete p : lista) {
+
             fila[0] = p.getGuia();
-            fila[1] = p.getRemitente();
-            fila[2] = p.getDestinatario();
-            fila[3] = p.getDireccion();
-            fila[4] = p.getPeso();
-            fila[5] = p.getTipo();
-            // Aquí podrías usar calcularEstadoPorTiempo(p.getFechaSistema()) si quieres que el inventario también sea automático
-            fila[6] = p.getEstado();
-            fila[7] = p.getFechaSistema(); // <--- CAMBIO: Ahora usa el Timestamp
+            fila[1] = p.getCiudadOrigen();
+            fila[2] = p.getCiudadDestino();
+            fila[3] = p.getRemitente();
+            fila[4] = p.getDestinatario();
+            fila[5] = p.getDireccion();
+            fila[6] = p.getPeso();
+            fila[7] = p.getTipo();
+            fila[8] = p.getEstado();
+            fila[9] = p.getUbicacionActual();
+            fila[10] = p.getFechaSistema();
+
             modeloTabla.addRow(fila);
         }
 
@@ -47,66 +75,150 @@ public class PaqueteController {
     }
 
     /**
-     * Método para el Registro: Ahora ya NO pide la fecha, MySQL la pone sola.
+     * GUARDAR PAQUETE
      */
-    public boolean guardarPaquete(String guia, String rem, String dest, String dir, String pesoStr, String tipo, String est) {
+    public boolean guardarPaquete(
+            String guia,
+            String rem,
+            String dest,
+            String dir,
+            String pesoStr,
+            String tipo,
+            String ciudadOrigen,
+            String ciudadDestino) {
 
-        if (guia.isEmpty() || rem.isEmpty() || dest.isEmpty() || pesoStr.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Error: Faltan datos obligatorios.");
+        // VALIDACIÓN
+        if (guia.isEmpty()
+                || rem.isEmpty()
+                || dest.isEmpty()
+                || pesoStr.isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error: Faltan datos obligatorios."
+            );
+
             return false;
         }
 
         try {
-            double peso = Double.parseDouble(pesoStr.trim().replace(",", "."));
-            // El constructor de Paquete ahora no necesita la fecha manual
+
+            double peso = Double.parseDouble(
+                    pesoStr.trim().replace(",", ".")
+            );
+
+            // CREAR OBJETO PAQUETE
             Paquete nuevoPaquete = new Paquete();
+
             nuevoPaquete.setGuia(guia);
             nuevoPaquete.setRemitente(rem);
             nuevoPaquete.setDestinatario(dest);
             nuevoPaquete.setDireccion(dir);
             nuevoPaquete.setPeso(peso);
             nuevoPaquete.setTipo(tipo);
-            nuevoPaquete.setEstado(est);
+            nuevoPaquete.setEstado("En Bodega"); // El estado inicial ahora es automático
+            nuevoPaquete.setCiudadOrigen(ciudadOrigen);
+            nuevoPaquete.setCiudadDestino(ciudadDestino);
 
-            return dao.registrar(nuevoPaquete);
+            // REGISTRAR PAQUETE
+            boolean paqueteRegistrado
+                    = dao.registrar(nuevoPaquete);
+
+            // SI EL PAQUETE SE REGISTRÓ BIEN
+            if (paqueteRegistrado) {
+
+                // CREAR PRIMER MOVIMIENTO
+                MovimientoPaquete movimiento
+                        = new MovimientoPaquete();
+
+                movimiento.setGuiaRastreo(guia);
+
+                movimiento.setEstado("En Bodega");
+
+                movimiento.setUbicacion(ciudadOrigen);
+
+                movimiento.setDescripcion(
+                        "Paquete registrado en el sistema"
+                );
+
+                // GUARDAR MOVIMIENTO
+                movimientoDAO.registrarMovimiento(
+                        movimiento
+                );
+            }
+
+            return paqueteRegistrado;
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "El peso ingresado no es un número válido.");
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "El peso ingresado no es un número válido."
+            );
+
             return false;
         }
     }
 
     /**
-     * MÉTODO MÁGICO: Este es el que hace los cálculos para la vista de usuario.
+     * CALCULAR ESTADO AUTOMÁTICO
      */
-    public String calcularEstadoPorTiempo(Timestamp fechaSistema) {
+    public String calcularEstadoPorTiempo(
+            Timestamp fechaSistema) {
+
         if (fechaSistema == null) {
-            return "EN BODEGA";
+
+            return "En Bodega";
         }
 
         long ahora = System.currentTimeMillis();
+
         long registro = fechaSistema.getTime();
+
         long diferenciaMillis = ahora - registro;
 
-        // CAMBIO: Ahora dividimos solo por 1000 para obtener SEGUNDOS
-        long segundosPasados = diferenciaMillis / 1000;
+        long segundosPasados
+                = diferenciaMillis / 1000;
 
-        // Umbrales rápidos para demostración (ajústalos a tu gusto)
         if (segundosPasados < 10) {
-            return "EN BODEGA"; // Primeros 10 segundos
-        }
-        if (segundosPasados < 20) {
-            return "EN DESPACHO"; // De los 10 a los 20 segundos
-        }
-        if (segundosPasados < 30) {
-            return "EN RUTA"; // De los 20 a los 30 segundos
+
+            return "En Bodega";
         }
 
-        return "ENTREGADO"; // Después de 30 segundos
+        if (segundosPasados < 20) {
+
+            return "En Despacho";
+        }
+
+        if (segundosPasados < 30) {
+
+            return "En Ruta";
+        }
+
+        return "Entregado";
     }
 
-    // Agrega esto dentro de tu clase PaqueteController
-    public Paquete buscarPaquetePorGuia(String guia) {
+    /**
+     * BUSCAR PAQUETE POR GUÍA
+     */
+    public Paquete buscarPaquetePorGuia(
+            String guia) {
+
         return dao.buscarPorGuia(guia);
+    }
+
+    /**
+     * ACTUALIZAR ESTADO Y UBICACIÓN
+     */
+    public boolean actualizarEstadoPaquete(
+            String guia,
+            String estado,
+            String ubicacion) {
+
+        return dao.actualizarEstado(
+                guia,
+                estado,
+                ubicacion
+        );
     }
 }

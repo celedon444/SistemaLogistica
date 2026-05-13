@@ -27,17 +27,9 @@ public class VtnRastreo extends javax.swing.JInternalFrame {
 
         txtGuia.setText("");
         lblEstado.setText("Ingrese su guía para rastrear");
+        lblUbicacion.setText("");
         progresoEnvio.setValue(0);
 
-        // Detener el timer si se cierra la ventana
-        this.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent e) {
-                if (timerRastreo != null) {
-                    timerRastreo.stop();
-                }
-            }
-        });
     }
 
     /**
@@ -56,6 +48,7 @@ public class VtnRastreo extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         lblEstado = new javax.swing.JLabel();
         progresoEnvio = new javax.swing.JProgressBar();
+        lblUbicacion = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
 
@@ -83,9 +76,12 @@ public class VtnRastreo extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Estado del Envío", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
         lblEstado.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        lblEstado.setText("Estado del Envío");
+        lblEstado.setText("Estado del envío");
 
         progresoEnvio.setStringPainted(true);
+
+        lblUbicacion.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblUbicacion.setText("Ubicación actual");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -97,15 +93,19 @@ public class VtnRastreo extends javax.swing.JInternalFrame {
                 .addContainerGap(48, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblEstado)
-                .addGap(162, 162, 162))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblUbicacion)
+                    .addComponent(lblEstado))
+                .addGap(164, 164, 164))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(56, Short.MAX_VALUE)
+                .addGap(26, 26, 26)
                 .addComponent(lblEstado)
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblUbicacion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(progresoEnvio, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
         );
@@ -176,75 +176,99 @@ public class VtnRastreo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRastrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRastrearActionPerformed
-        String guiaIngresada = txtGuia.getText().trim();
 
+        String guiaIngresada
+                = txtGuia.getText().trim();
+
+        // Validar guía vacía
         if (guiaIngresada.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un número de guía.");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese una guía."
+            );
+
             return;
         }
 
-        // 1. Si ya hay un timer corriendo de una búsqueda anterior, lo detenemos
-        if (timerRastreo != null && timerRastreo.isRunning()) {
-            timerRastreo.stop();
-        }
+        // Buscar paquete en BD
+        Paquete paquete
+                = control.buscarPaquetePorGuia(
+                        guiaIngresada
+                );
 
-        // 2. Buscamos el paquete por primera vez para validar si existe
-        Paquete p = control.buscarPaquetePorGuia(guiaIngresada);
+        // Si existe
+        if (paquete != null) {
 
-        if (p != null) {
-            // 3. Creamos el Timer: se ejecutará cada 1000 milisegundos (1 segundo)
-            timerRastreo = new javax.swing.Timer(1000, (e) -> {
-                // Buscamos de nuevo (por si hubo cambios en BD) o usamos el objeto p
-                // En este caso, recalculamos el estado con la fecha de registro original
-                String estadoCalculado = control.calcularEstadoPorTiempo(p.getFechaSistema());
+            // Mostrar estado REAL
+            lblEstado.setText(
+                    "Estado: "
+                    + paquete.getEstado()
+            );
 
-                // Actualizamos la interfaz
-                lblEstado.setText(estadoCalculado);
-                actualizarBarra(estadoCalculado);
+            // Mostrar ubicación REAL
+            lblUbicacion.setText(
+                    "Ubicación actual: "
+                    + paquete.getUbicacionActual()
+            );
 
-                // 4. Si el paquete ya llegó a su destino, detenemos el reloj
-                if (estadoCalculado.equals("ENTREGADO")) {
-                    ((javax.swing.Timer) e.getSource()).stop();
-                }
-            });
-
-            // 5. ¡Arrancamos el reloj!
-            timerRastreo.start();
-
-            // Llamada inicial para que no espere el primer segundo para mostrar algo
-            lblEstado.setText(control.calcularEstadoPorTiempo(p.getFechaSistema()));
-            actualizarBarra(lblEstado.getText());
+            // Actualizar progress bar
+            actualizarBarra(
+                    paquete.getEstado()
+            );
 
         } else {
-            lblEstado.setText("No encontrado");
+
+            lblEstado.setText(
+                    "Paquete no encontrado"
+            );
+
+            lblUbicacion.setText("");
+
             progresoEnvio.setValue(0);
-            JOptionPane.showMessageDialog(this, "La guía '" + guiaIngresada + "' no existe.");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La guía no existe."
+            );
         }
+
     }//GEN-LAST:event_btnRastrearActionPerformed
 
     private void actualizarBarra(String estado) {
         switch (estado) {
-            case "EN BODEGA": {
+
+            case "En Bodega":
+
                 progresoEnvio.setValue(25);
-                progresoEnvio.setForeground(Color.BLACK);
-            }
-            case "EN DESPACHO": {
+                break;
+
+            case "En Despacho":
+
                 progresoEnvio.setValue(50);
-                progresoEnvio.setForeground(Color.BLACK);
-            }
-            case "EN RUTA": {
+                break;
+
+            case "En Ruta":
+
                 progresoEnvio.setValue(75);
-                progresoEnvio.setForeground(Color.BLACK);
-            }
-            case "ENTREGADO": {
+                break;
+
+            case "Entregado":
+
                 progresoEnvio.setValue(100);
-                progresoEnvio.setForeground(Color.BLACK);
-            }
+                break;
+
+            default:
+
+                progresoEnvio.setValue(0);
+                break;
         }
+
+        progresoEnvio.setString(
+                progresoEnvio.getValue() + "%"
+        );
     }
-    
-    // <--- PÉGALO AQUÍ (Fuera del bloque de Variables declaration)
-    private javax.swing.Timer timerRastreo;
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRastrear;
@@ -254,6 +278,7 @@ public class VtnRastreo extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblEstado;
+    private javax.swing.JLabel lblUbicacion;
     private javax.swing.JProgressBar progresoEnvio;
     private javax.swing.JTextField txtGuia;
     // End of variables declaration//GEN-END:variables

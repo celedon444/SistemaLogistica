@@ -12,18 +12,21 @@ public class PaqueteDAO {
     // MÉTODO 1: Registrar (Ahora más limpio, sin enviar fecha manual)
     public boolean registrar(Paquete paquete) {
         // QUITAMOS 'fecha_registro' del INSERT porque ahora MySQL usa 'fecha_sistema' automáticamente
-        String sql = "INSERT INTO paquetes (guia_rastreo, remitente, destinatario, direccion_entrega, peso, tipo_envio, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO paquetes (guia_rastreo, ciudad_origen, ciudad_destino, remitente, destinatario, direccion_entrega, peso, tipo_envio, estado, ubicacion_actual) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ConexionBD.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, paquete.getGuia());
-            ps.setString(2, paquete.getRemitente());
-            ps.setString(3, paquete.getDestinatario());
-            ps.setString(4, paquete.getDireccion());
-            ps.setDouble(5, paquete.getPeso());
-            ps.setString(6, paquete.getTipo());
-            ps.setString(7, paquete.getEstado());
+            ps.setString(2, paquete.getCiudadOrigen());
+            ps.setString(3, paquete.getCiudadDestino());
+            ps.setString(4, paquete.getRemitente());
+            ps.setString(5, paquete.getDestinatario());
+            ps.setString(6, paquete.getDireccion());
+            ps.setDouble(7, paquete.getPeso());
+            ps.setString(8, paquete.getTipo());
+            ps.setString(9, paquete.getEstado());
+            ps.setString(10, paquete.getCiudadOrigen());
 
             int resultado = ps.executeUpdate();
             return resultado > 0;
@@ -46,15 +49,18 @@ public class PaqueteDAO {
             while (rs.next()) {
                 Paquete p = new Paquete();
                 p.setGuia(rs.getString("guia_rastreo"));
+                p.setCiudadOrigen(rs.getString("ciudad_origen"));
+                p.setCiudadDestino(rs.getString("ciudad_destino"));
                 p.setRemitente(rs.getString("remitente"));
                 p.setDestinatario(rs.getString("destinatario"));
                 p.setDireccion(rs.getString("direccion_entrega"));
                 p.setPeso(rs.getDouble("peso"));
                 p.setTipo(rs.getString("tipo_envio"));
                 p.setEstado(rs.getString("estado"));
+                p.setUbicacionActual(rs.getString("ubicacion_actual"));
                 
                 // AQUÍ ESTÁ EL CAMBIO: Leemos la fecha como Timestamp
-                p.setFechaSistema(rs.getTimestamp("fecha_sistema"));
+                p.setFechaSistema(rs.getTimestamp("fecha_registro"));
 
                 lista.add(p);
             }
@@ -74,14 +80,17 @@ public class PaqueteDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Paquete p = new Paquete();
-                    p.setGuia(rs.getString("guia_rastreo"));
+                    p.setGuia(rs.getString("guia_rastreo"));            
+                    p.setCiudadOrigen(rs.getString("ciudad_origen"));
+                    p.setCiudadDestino(rs.getString("ciudad_destino"));                   
                     p.setRemitente(rs.getString("remitente"));
                     p.setDestinatario(rs.getString("destinatario"));
                     p.setDireccion(rs.getString("direccion_entrega"));
                     p.setPeso(rs.getDouble("peso"));
                     p.setTipo(rs.getString("tipo_envio"));
                     p.setEstado(rs.getString("estado"));
-                    p.setFechaSistema(rs.getTimestamp("fecha_sistema"));
+                    p.setUbicacionActual(rs.getString("ubicacion_actual"));
+                    p.setFechaSistema(rs.getTimestamp("fecha_registro"));
                     return p;
                 }
             }
@@ -89,5 +98,34 @@ public class PaqueteDAO {
             System.out.println("Error al buscar: " + e.getMessage());
         }
         return null;
+    }
+    
+     public boolean actualizarEstado(
+            String guia,
+            String nuevoEstado,
+            String nuevaUbicacion) {
+
+        String sql = "UPDATE paquetes "
+                + "SET estado = ?, ubicacion_actual = ? "
+                + "WHERE guia_rastreo = ?";
+
+        try (Connection con = ConexionBD.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, nuevoEstado);
+            ps.setString(2, nuevaUbicacion);
+            ps.setString(3, guia);
+
+            int resultado = ps.executeUpdate();
+
+            return resultado > 0;
+
+        } catch (SQLException e) {
+
+            System.out.println("Error actualizar estado: "
+                    + e.getMessage());
+
+            return false;
+        }
     }
 }

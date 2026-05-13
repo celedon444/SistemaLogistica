@@ -5,7 +5,7 @@
 package vista;
 
 import controlador.PaqueteController;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.Timer;
 
 /**
  *
@@ -20,7 +20,12 @@ public class VtnInventario extends javax.swing.JInternalFrame {
 
     public VtnInventario() {
         initComponents();
-        mostrarDatos(); 
+        mostrarDatos();  // Cargar datos al abrir
+        Timer timer = new Timer(1000, e -> {  // temporizador que actualiza la tabla 
+            mostrarDatos();                    // automáticamente cada 3 segundos
+        });
+
+        timer.start();
     }
 
     public void mostrarDatos() {
@@ -40,7 +45,6 @@ public class VtnInventario extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInventario = new javax.swing.JTable();
-        btnActualizar = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
 
@@ -58,22 +62,16 @@ public class VtnInventario extends javax.swing.JInternalFrame {
 
         tblInventario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Guía", "Remitente", "Destinatario", "Dirección", "Peso (Kg)", "Tipo", "Estado", "Fecha y Hora"
+                "Guía", "Ciudad origen", "Ciudad destino", "Remitente", "Destinatario", "Dirección", "Peso", "Tipo paquete", "Estado", "Ubicación actual", "Fecha y hora"
             }
         ));
         jScrollPane1.setViewportView(tblInventario);
-
-        btnActualizar.setBackground(new java.awt.Color(0, 153, 0));
-        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
-        btnActualizar.setText("Actualizar Tabla");
-        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
         jLabel12.setText("© 2026 GoPack | Todos los derechos reservados");
 
@@ -97,10 +95,6 @@ public class VtnInventario extends javax.swing.JInternalFrame {
                         .addGap(117, 117, 117)
                         .addComponent(jLabel1)
                         .addContainerGap(327, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnActualizar)
-                .addGap(97, 97, 97))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,23 +104,15 @@ public class VtnInventario extends javax.swing.JInternalFrame {
                     .addComponent(jLabel12)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
-                .addComponent(btnActualizar)
-                .addGap(53, 53, 53)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        // TODO add your handling code here:
-        mostrarDatos();
-    }//GEN-LAST:event_btnActualizarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

@@ -59,7 +59,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemRegistro">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Registrar paquete"/>
+                <Property name="text" type="java.lang.String" value="Registrar Paquete"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemRegistroActionPerformed"/>
@@ -67,7 +67,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemInventario">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ver inventario "/>
+                <Property name="text" type="java.lang.String" value="Ver Inventario "/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemInventarioActionPerformed"/>
@@ -87,6 +87,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemReportesActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemActualizarEstadoPaquete">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Actualizar Estado Paquete"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemActualizarEstadoPaqueteActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
