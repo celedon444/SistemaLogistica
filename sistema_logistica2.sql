@@ -48,8 +48,22 @@ CREATE TABLE paquetes (
     direccion_entrega TEXT,
     peso DOUBLE NOT NULL,
     tipo_envio VARCHAR(50),
-    estado VARCHAR(50) DEFAULT 'EN BODEGA',
+    estado VARCHAR(50) DEFAULT 'En Bodega',
     ubicacion_actual VARCHAR(100),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE solicitudes_envio (
+    id_solicitud INT AUTO_INCREMENT PRIMARY KEY,
+    remitente VARCHAR(100) NOT NULL,
+    destinatario VARCHAR(100) NOT NULL,
+    ciudad_origen VARCHAR(100),
+    ciudad_destino VARCHAR(100),
+    direccion_entrega TEXT,
+    peso DOUBLE NOT NULL,
+    tipo_envio VARCHAR(50),
+    estado VARCHAR(50) DEFAULT 'Pendiente',
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -221,4 +235,5 @@ select * from reportes;
 select * from usuarios;
 select * from paquetes;
 SELECT * FROM movimientos_paquete;
+select * from solicitudes_envio;
 

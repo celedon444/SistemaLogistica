@@ -52,7 +52,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="menuOperaciones">
+        <Menu class="javax.swing.JMenu" name="itemSolicitudEnvio">
           <Properties>
             <Property name="text" type="java.lang.String" value="Operaciones"/>
           </Properties>
@@ -103,6 +103,22 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemGestionReportesActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemSolicitarEnvio">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Solicitar Env&#xed;o"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemSolicitarEnvioActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemGestionSolicitudes">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gestionar Solicitudes"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemGestionSolicitudesActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

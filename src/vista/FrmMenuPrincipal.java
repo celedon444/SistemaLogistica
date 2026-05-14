@@ -29,14 +29,16 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     public void validarAdmin() {
         // SI EL USUARIO NO ES ADMIN
         if (!rol.equals("ADMIN")) {
-            
+
             // Ocultar opciones solo para ADMIN
             itemInventario.setVisible(false);
             itemRegistro.setVisible(false);
             itemActualizarEstadoPaquete.setVisible(false);
             itemGestionReportes.setVisible(false);
+            itemGestionSolicitudes.setVisible(false);
         } else {
             itemReportes.setVisible(false);
+            itemSolicitarEnvio.setVisible(false);
         }
     }
 
@@ -61,13 +63,15 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         itemCerrarSesion = new javax.swing.JMenuItem();
         itemSalir = new javax.swing.JMenuItem();
-        menuOperaciones = new javax.swing.JMenu();
+        itemSolicitudEnvio = new javax.swing.JMenu();
         itemRegistro = new javax.swing.JMenuItem();
         itemInventario = new javax.swing.JMenuItem();
         itemRastreo = new javax.swing.JMenuItem();
         itemReportes = new javax.swing.JMenuItem();
         itemActualizarEstadoPaquete = new javax.swing.JMenuItem();
         itemGestionReportes = new javax.swing.JMenuItem();
+        itemSolicitarEnvio = new javax.swing.JMenuItem();
+        itemGestionSolicitudes = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -147,33 +151,41 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuPrincipal);
 
-        menuOperaciones.setText("Operaciones");
+        itemSolicitudEnvio.setText("Operaciones");
 
         itemRegistro.setText("Registrar Paquete");
         itemRegistro.addActionListener(this::itemRegistroActionPerformed);
-        menuOperaciones.add(itemRegistro);
+        itemSolicitudEnvio.add(itemRegistro);
 
         itemInventario.setText("Ver Inventario ");
         itemInventario.addActionListener(this::itemInventarioActionPerformed);
-        menuOperaciones.add(itemInventario);
+        itemSolicitudEnvio.add(itemInventario);
 
         itemRastreo.setText("Rastrear Paquete");
         itemRastreo.addActionListener(this::itemRastreoActionPerformed);
-        menuOperaciones.add(itemRastreo);
+        itemSolicitudEnvio.add(itemRastreo);
 
         itemReportes.setText("Reportes y Devoluciones");
         itemReportes.addActionListener(this::itemReportesActionPerformed);
-        menuOperaciones.add(itemReportes);
+        itemSolicitudEnvio.add(itemReportes);
 
         itemActualizarEstadoPaquete.setText("Actualizar Estado Paquete");
         itemActualizarEstadoPaquete.addActionListener(this::itemActualizarEstadoPaqueteActionPerformed);
-        menuOperaciones.add(itemActualizarEstadoPaquete);
+        itemSolicitudEnvio.add(itemActualizarEstadoPaquete);
 
         itemGestionReportes.setText("Gestionar Reportes");
         itemGestionReportes.addActionListener(this::itemGestionReportesActionPerformed);
-        menuOperaciones.add(itemGestionReportes);
+        itemSolicitudEnvio.add(itemGestionReportes);
 
-        jMenuBar1.add(menuOperaciones);
+        itemSolicitarEnvio.setText("Solicitar Envío");
+        itemSolicitarEnvio.addActionListener(this::itemSolicitarEnvioActionPerformed);
+        itemSolicitudEnvio.add(itemSolicitarEnvio);
+
+        itemGestionSolicitudes.setText("Gestionar Solicitudes");
+        itemGestionSolicitudes.addActionListener(this::itemGestionSolicitudesActionPerformed);
+        itemSolicitudEnvio.add(itemGestionSolicitudes);
+
+        jMenuBar1.add(itemSolicitudEnvio);
 
         setJMenuBar(jMenuBar1);
 
@@ -324,6 +336,60 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_itemGestionReportesActionPerformed
 
+    private void itemSolicitarEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSolicitarEnvioActionPerformed
+        // TODO add your handling code here:
+        // Recorremos todas las ventanas abiertas
+        for (javax.swing.JInternalFrame frame
+                : desktopContenedor.getAllFrames()) {
+
+            // Si la ventana ya está abierta
+            if (frame instanceof VtnSolicitudEnvio) {
+
+                // La traemos al frente
+                frame.toFront();
+
+                return;
+            }
+        }
+
+        // Si NO existe, la creamos
+        VtnSolicitudEnvio ventana
+                = new VtnSolicitudEnvio();
+
+        // La agregamos al contenedor principal
+        desktopContenedor.add(ventana);
+
+        // La hacemos visible
+        ventana.setVisible(true);
+    }//GEN-LAST:event_itemSolicitarEnvioActionPerformed
+
+    private void itemGestionSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionSolicitudesActionPerformed
+        // TODO add your handling code here:
+        // Recorremos las ventanas abiertas
+        for (javax.swing.JInternalFrame frame
+                : desktopContenedor.getAllFrames()) {
+
+            // Si la ventana ya existe
+            if (frame instanceof VtnGestionSolicitudes) {
+
+                // La traemos al frente
+                frame.toFront();
+
+                return;
+            }
+        }
+
+        // Si no existe, la creamos
+        VtnGestionSolicitudes ventana
+                = new VtnGestionSolicitudes();
+
+        // La agregamos al contenedor
+        desktopContenedor.add(ventana);
+
+        // La mostramos
+        ventana.setVisible(true);
+    }//GEN-LAST:event_itemGestionSolicitudesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -354,11 +420,14 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemActualizarEstadoPaquete;
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemGestionReportes;
+    private javax.swing.JMenuItem itemGestionSolicitudes;
     private javax.swing.JMenuItem itemInventario;
     private javax.swing.JMenuItem itemRastreo;
     private javax.swing.JMenuItem itemRegistro;
     private javax.swing.JMenuItem itemReportes;
     private javax.swing.JMenuItem itemSalir;
+    private javax.swing.JMenuItem itemSolicitarEnvio;
+    private javax.swing.JMenu itemSolicitudEnvio;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
@@ -367,7 +436,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblUsuarioLogueado;
-    private javax.swing.JMenu menuOperaciones;
     private javax.swing.JMenu menuPrincipal;
     // End of variables declaration//GEN-END:variables
 }

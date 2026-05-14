@@ -96,7 +96,7 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
         cbEstadoReporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar...", "Pendiente", "En Revisión", "Resuelto" }));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Estado de reporte:");
 
         btnActualizarEstadoReporte.setBackground(new java.awt.Color(0, 153, 0));
@@ -105,7 +105,7 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
         btnActualizarEstadoReporte.setText("Actualizar");
         btnActualizarEstadoReporte.addActionListener(this::btnActualizarEstadoReporteActionPerformed);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Seleccione un reporte de la tabla para actualizar su estado");
 
