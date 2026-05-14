@@ -4,6 +4,9 @@
  */
 package vista;
 
+import dao.SolicitudEnvioDAO;
+import render.RenderEstadoSolicitudes;
+
 /**
  *
  * @author camil
@@ -38,20 +41,32 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
             // MODELO DE LA TABLA
             // =====================================================
             javax.swing.table.DefaultTableModel modelo
-                    = new javax.swing.table.DefaultTableModel();
+                    = new javax.swing.table.DefaultTableModel() {
+
+                @Override
+                public boolean isCellEditable(
+                        int row,
+                        int column
+                ) {
+
+                    return false;
+                }
+            };
 
             // =====================================================
             // CREAR COLUMNAS
             // =====================================================
             modelo.addColumn("ID");
+            modelo.addColumn("Guía");
             modelo.addColumn("Remitente");
             modelo.addColumn("Destinatario");
             modelo.addColumn("Origen");
             modelo.addColumn("Destino");
             modelo.addColumn("Dirección");
-            modelo.addColumn("Peso");
+            modelo.addColumn("Peso(Kg)");
             modelo.addColumn("Tipo");
             modelo.addColumn("Estado");
+            modelo.addColumn("Fecha");
 
             // =====================================================
             // RECORRER RESULTADOS DE MYSQL
@@ -60,6 +75,7 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
 
                 modelo.addRow(new Object[]{
                     rs.getInt("id_solicitud"),
+                    rs.getString("guia"),
                     rs.getString("remitente"),
                     rs.getString("destinatario"),
                     rs.getString("ciudad_origen"),
@@ -67,7 +83,8 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
                     rs.getString("direccion_entrega"),
                     rs.getDouble("peso"),
                     rs.getString("tipo_envio"),
-                    rs.getString("estado")
+                    rs.getString("estado"),
+                    rs.getTimestamp("fecha_registro")
                 });
             }
 
@@ -75,6 +92,16 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
             // PONER DATOS EN LA TABLA
             // =====================================================
             tablaSolicitudes.setModel(modelo);
+
+            // =====================================================
+// APLICAR COLORES A LA COLUMNA ESTADO
+// =====================================================
+            tablaSolicitudes
+                    .getColumnModel()
+                    .getColumn(9)
+                    .setCellRenderer(
+                            new RenderEstadoSolicitudes()
+                    );
 
         } catch (Exception e) {
 
@@ -134,11 +161,13 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
         btnAceptar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAceptar.setForeground(new java.awt.Color(255, 255, 255));
         btnAceptar.setText("Aceptar solicitud");
+        btnAceptar.addActionListener(this::btnAceptarActionPerformed);
 
         btnRechazar.setBackground(new java.awt.Color(153, 0, 0));
         btnRechazar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRechazar.setForeground(new java.awt.Color(255, 255, 255));
         btnRechazar.setText("Rechazar solicitud");
+        btnRechazar.addActionListener(this::btnRechazarActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -186,6 +215,229 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        // =====================================================
+        // OBTENER FILA SELECCIONADA
+        // =====================================================
+        int fila = tablaSolicitudes.getSelectedRow();
+
+        // =====================================================
+        // VALIDAR SI NO SE SELECCIONÓ NADA
+        // =====================================================
+        if (fila == -1) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione una solicitud"
+            );
+
+            return;
+        }
+
+        // =====================================================
+        // OBTENER ESTADO ACTUAL
+        // =====================================================
+        String estado = tablaSolicitudes
+                .getValueAt(fila, 9)
+                .toString();
+
+        // =====================================================
+        // VALIDAR SI YA FUE ACEPTADA
+        // =====================================================
+        if (estado.equals("ACEPTADA")) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Esta solicitud ya fue aceptada"
+            );
+
+            return;
+        }
+
+        if (estado.equals("RECHAZADA")) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No puedes aceptar una solicitud rechazada"
+            );
+
+            return;
+        }
+
+        // =====================================================
+        // OBTENER ID DE LA SOLICITUD
+        // =====================================================
+        int idSolicitud = Integer.parseInt(
+                tablaSolicitudes
+                        .getValueAt(fila, 0)
+                        .toString()
+        );
+
+        // =====================================================
+        // CREAR OBJETO DAO
+        // =====================================================
+        SolicitudEnvioDAO dao = new SolicitudEnvioDAO();
+
+        // =====================================================
+        // GENERAR GUÍA
+        // =====================================================
+        String guia = dao.generarGuia();
+
+        // =====================================================
+// CONFIRMAR ACEPTACIÓN
+// =====================================================
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Aceptar esta solicitud?",
+                "Confirmar",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+// =====================================================
+// SI EL ADMIN CANCELA
+// =====================================================
+        if (confirmacion != javax.swing.JOptionPane.YES_OPTION) {
+
+            return;
+        }
+
+        // =====================================================
+        // ACTUALIZAR SOLICITUD EN MYSQL
+        // =====================================================
+        boolean resultado = dao.aceptarSolicitud(
+                idSolicitud,
+                guia
+        );
+
+        // =====================================================
+        // VALIDAR SI TODO SALIÓ BIEN
+        // =====================================================
+        if (resultado) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Solicitud aceptada\nGuía: " + guia
+            );
+
+            // =====================================================
+            // RECARGAR TABLA
+            // =====================================================
+            cargarSolicitudes();
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+
+    private void btnRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRechazarActionPerformed
+        // TODO add your handling code here:
+
+        // =====================================================
+        // OBTENER FILA SELECCIONADA
+        // =====================================================
+        int fila = tablaSolicitudes.getSelectedRow();
+
+        // =====================================================
+        // VALIDAR SI NO SE SELECCIONÓ NADA
+        // =====================================================
+        if (fila == -1) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione una solicitud"
+            );
+
+            return;
+        }
+
+        // =====================================================
+        // OBTENER ESTADO ACTUAL
+        // =====================================================
+        String estado = tablaSolicitudes
+                .getValueAt(fila, 9)
+                .toString();
+
+        // =====================================================
+        // VALIDAR SI YA ESTÁ RECHAZADA
+        // =====================================================
+        if (estado.equals("RECHAZADA")) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Esta solicitud ya fue rechazada"
+            );
+
+            return;
+        }
+
+        // =====================================================
+        // VALIDAR SI YA ESTÁ ACEPTADA
+        // =====================================================
+        if (estado.equals("ACEPTADA")) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No puedes rechazar una solicitud aceptada"
+            );
+
+            return;
+        }
+
+        // =====================================================
+        // OBTENER ID DE LA SOLICITUD
+        // =====================================================
+        int idSolicitud = Integer.parseInt(
+                tablaSolicitudes
+                        .getValueAt(fila, 0)
+                        .toString()
+        );
+
+        // =====================================================
+        // CREAR OBJETO DAO
+        // =====================================================
+        SolicitudEnvioDAO dao
+                = new SolicitudEnvioDAO();
+
+        // =====================================================
+// CONFIRMAR RECHAZO
+// =====================================================
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Rechazar esta solicitud?",
+                "Confirmar",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+// =====================================================
+// SI EL ADMIN CANCELA
+// =====================================================
+        if (confirmacion != javax.swing.JOptionPane.YES_OPTION) {
+
+            return;
+        }
+
+        // =====================================================
+        // RECHAZAR SOLICITUD
+        // =====================================================
+        boolean resultado
+                = dao.rechazarSolicitud(idSolicitud);
+
+        // =====================================================
+        // VALIDAR RESULTADO
+        // =====================================================
+        if (resultado) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Solicitud rechazada"
+            );
+
+            // =====================================================
+            // RECARGAR TABLA
+            // =====================================================
+            cargarSolicitudes();
+        }
+    }//GEN-LAST:event_btnRechazarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
