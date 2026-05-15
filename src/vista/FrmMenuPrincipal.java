@@ -32,7 +32,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
             // Ocultar opciones solo para ADMIN
             itemInventario.setVisible(false);
-            itemRegistro.setVisible(false);
             itemActualizarEstadoPaquete.setVisible(false);
             itemGestionReportes.setVisible(false);
             itemGestionSolicitudes.setVisible(false);
@@ -64,7 +63,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         itemCerrarSesion = new javax.swing.JMenuItem();
         itemSalir = new javax.swing.JMenuItem();
         itemSolicitudEnvio = new javax.swing.JMenu();
-        itemRegistro = new javax.swing.JMenuItem();
         itemInventario = new javax.swing.JMenuItem();
         itemRastreo = new javax.swing.JMenuItem();
         itemReportes = new javax.swing.JMenuItem();
@@ -153,10 +151,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         itemSolicitudEnvio.setText("Operaciones");
 
-        itemRegistro.setText("Registrar Paquete");
-        itemRegistro.addActionListener(this::itemRegistroActionPerformed);
-        itemSolicitudEnvio.add(itemRegistro);
-
         itemInventario.setText("Ver Inventario ");
         itemInventario.addActionListener(this::itemInventarioActionPerformed);
         itemSolicitudEnvio.add(itemInventario);
@@ -225,22 +219,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_itemCerrarSesionActionPerformed
-
-    private void itemRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRegistroActionPerformed
-        // 1. Verificamos si la ventana ya está abierta para no duplicarla
-        for (javax.swing.JInternalFrame frame : desktopContenedor.getAllFrames()) {
-            if (frame instanceof VtnRegistroPaquetes) {
-                frame.toFront(); // La trae al frente si ya existe
-                return;
-            }
-        }
-
-        // 2. Si no existe, la creamos
-        VtnRegistroPaquetes ventana = new VtnRegistroPaquetes();
-        desktopContenedor.add(ventana);
-
-        ventana.setVisible(true);
-    }//GEN-LAST:event_itemRegistroActionPerformed
 
     private void itemInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemInventarioActionPerformed
         // 1. Verificamos si ya está abierta
@@ -423,7 +401,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemGestionSolicitudes;
     private javax.swing.JMenuItem itemInventario;
     private javax.swing.JMenuItem itemRastreo;
-    private javax.swing.JMenuItem itemRegistro;
     private javax.swing.JMenuItem itemReportes;
     private javax.swing.JMenuItem itemSalir;
     private javax.swing.JMenuItem itemSolicitarEnvio;

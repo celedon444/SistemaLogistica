@@ -14,7 +14,6 @@ public class PaqueteController {
     private PaqueteDAO dao;
     private MovimientoDAO movimientoDAO;
 
-    // CONSTRUCTOR
     public PaqueteController() {
 
         dao = new PaqueteDAO();
@@ -22,10 +21,7 @@ public class PaqueteController {
         movimientoDAO = new MovimientoDAO();
     }
 
-    /**
-     * CONSULTAR INVENTARIO
-     */
-    public DefaultTableModel consultarInventario() {
+    public DefaultTableModel consultarInventario() { // consultar el inventario
 
         String[] titulos = {
             "Guía",
@@ -74,10 +70,8 @@ public class PaqueteController {
         return modeloTabla;
     }
 
-    /**
-     * GUARDAR PAQUETE
-     */
-    public boolean guardarPaquete(
+
+    public boolean guardarPaquete(  // guardar los paquetes
             String guia,
             String rem,
             String dest,
@@ -87,7 +81,6 @@ public class PaqueteController {
             String ciudadOrigen,
             String ciudadDestino) {
 
-        // VALIDACIÓN
         if (guia.isEmpty()
                 || rem.isEmpty()
                 || dest.isEmpty()
@@ -107,8 +100,7 @@ public class PaqueteController {
                     pesoStr.trim().replace(",", ".")
             );
 
-            // CREAR OBJETO PAQUETE
-            Paquete nuevoPaquete = new Paquete();
+            Paquete nuevoPaquete = new Paquete(); // crar objeto paquete
 
             nuevoPaquete.setGuia(guia);
             nuevoPaquete.setRemitente(rem);
@@ -116,19 +108,18 @@ public class PaqueteController {
             nuevoPaquete.setDireccion(dir);
             nuevoPaquete.setPeso(peso);
             nuevoPaquete.setTipo(tipo);
-            nuevoPaquete.setEstado("En Bodega"); // El estado inicial ahora es automático
+            nuevoPaquete.setEstado("En Bodega"); // estado inicial de los paquetes es automatico/predeterminado siempre inicia en (Bodega)
             nuevoPaquete.setCiudadOrigen(ciudadOrigen);
             nuevoPaquete.setCiudadDestino(ciudadDestino);
 
-            // REGISTRAR PAQUETE
-            boolean paqueteRegistrado
+
+            boolean paqueteRegistrado        // se registra el paquete
                     = dao.registrar(nuevoPaquete);
 
-            // SI EL PAQUETE SE REGISTRÓ BIEN
-            if (paqueteRegistrado) {
 
-                // CREAR PRIMER MOVIMIENTO
-                MovimientoPaquete movimiento
+            if (paqueteRegistrado) {       // si el paquete se registra bien... 
+
+                MovimientoPaquete movimiento   // crea el primer movimiento
                         = new MovimientoPaquete();
 
                 movimiento.setGuiaRastreo(guia);
@@ -141,8 +132,7 @@ public class PaqueteController {
                         "Paquete registrado en el sistema"
                 );
 
-                // GUARDAR MOVIMIENTO
-                movimientoDAO.registrarMovimiento(
+                movimientoDAO.registrarMovimiento(    // guardamos el movimiento
                         movimiento
                 );
             }
@@ -160,10 +150,8 @@ public class PaqueteController {
         }
     }
 
-    /**
-     * CALCULAR ESTADO AUTOMÁTICO
-     */
-    public String calcularEstadoPorTiempo(
+
+    public String calcularEstadoPorTiempo(  // calculamos el estado automatico
             Timestamp fechaSistema) {
 
         if (fechaSistema == null) {
@@ -198,19 +186,15 @@ public class PaqueteController {
         return "Entregado";
     }
 
-    /**
-     * BUSCAR PAQUETE POR GUÍA
-     */
-    public Paquete buscarPaquetePorGuia(
+    
+    public Paquete buscarPaquetePorGuia(  // rastreamos el paquete por la guia
             String guia) {
 
         return dao.buscarPorGuia(guia);
     }
 
-    /**
-     * ACTUALIZAR ESTADO Y UBICACIÓN
-     */
-    public boolean actualizarEstadoPaquete(
+
+    public boolean actualizarEstadoPaquete( // actualizamos estado y ubicacion
             String guia,
             String estado,
             String ubicacion) {
@@ -222,10 +206,8 @@ public class PaqueteController {
         );
     }
 
-    /**
-     * VALIDAR SI UNA GUÍA EXISTE
-     */
-    public boolean existeGuia(String guia) {
+    
+    public boolean existeGuia(String guia) { // validamos si la guia existe
 
         Paquete paquete = dao.buscarPorGuia(guia);
         return paquete != null;

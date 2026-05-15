@@ -1,6 +1,3 @@
--- =============================================
--- SCRIPT COMPLETO: SISTEMA DE LOGÍSTICA "GOPACK"
--- =============================================
 DROP DATABASE IF EXISTS sistema_logistica;
 CREATE DATABASE sistema_logistica;
 USE sistema_logistica;
@@ -53,9 +50,9 @@ CREATE TABLE paquetes (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
 CREATE TABLE solicitudes_envio (
     id_solicitud INT AUTO_INCREMENT PRIMARY KEY,
+    guia VARCHAR(5),
     remitente VARCHAR(100) NOT NULL,
     destinatario VARCHAR(100) NOT NULL,
     ciudad_origen VARCHAR(100),
@@ -66,6 +63,7 @@ CREATE TABLE solicitudes_envio (
     estado VARCHAR(50) DEFAULT 'Pendiente',
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 CREATE TABLE movimientos_paquete (
     id_movimiento INT AUTO_INCREMENT PRIMARY KEY,

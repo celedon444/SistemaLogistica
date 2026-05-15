@@ -14,18 +14,11 @@ import javax.swing.JOptionPane;
  */
 public class SolicitudEnvioController {
 
-    // =====================================================
-    // OBJETO DAO
-    // Sirve para conectarse con MySQL
-    // =====================================================
-    SolicitudEnvioDAO dao
-            = new SolicitudEnvioDAO();
 
-    /**
-     * ===================================================== REGISTRAR SOLICITUD
-     * DE ENVÍO =====================================================
-     */
-    public boolean registrarSolicitud(
+    SolicitudEnvioDAO dao = new SolicitudEnvioDAO(); // conectamos a sql
+
+
+    public boolean registrarSolicitud( // registramos solicitud de envio
             String remitente,
             String destinatario,
             String ciudadOrigen,
@@ -35,10 +28,8 @@ public class SolicitudEnvioController {
             String tipoEnvio
     ) {
 
-        // =====================================================
-        // VALIDAR CAMPOS VACÍOS
-        // =====================================================
-        if (remitente.isEmpty()
+
+        if (remitente.isEmpty()            // validamos los campos vacios
                 || destinatario.isEmpty()
                 || direccion.isEmpty()
                 || pesoTexto.isEmpty()
@@ -56,24 +47,14 @@ public class SolicitudEnvioController {
 
         try {
 
-            // =====================================================
-            // CONVERTIR PESO A DOUBLE
-            // =====================================================
-            double peso
-                    = Double.parseDouble(
-                            pesoTexto.replace(",", ".")
-                    );
 
-            // =====================================================
-            // CREAR OBJETO SOLICITUD
-            // =====================================================
-            SolicitudEnvio solicitud
-                    = new SolicitudEnvio();
+            double peso = Double.parseDouble(pesoTexto.replace(",", ".")); // convertimos el peso a double
 
-            // =====================================================
-            // ENVIAR DATOS AL MODELO
-            // =====================================================
-            solicitud.setRemitente(remitente);
+
+            SolicitudEnvio solicitud = new SolicitudEnvio(); // objeto para la solicitud
+
+
+            solicitud.setRemitente(remitente);  // enviamos el DAO al modelo
 
             solicitud.setDestinatario(destinatario);
 
@@ -87,26 +68,17 @@ public class SolicitudEnvioController {
 
             solicitud.setTipoEnvio(tipoEnvio);
 
-            // =====================================================
-            // ESTADO INICIAL
-            // =====================================================
-            solicitud.setEstado("PENDIENTE");
+            solicitud.setEstado("PENDIENTE"); // el estado actual automaticamente/por defecto sera (PENDIENTE)
 
-            // =====================================================
-            // GUARDAR EN MYSQL
-            // =====================================================
-            return dao.registrarSolicitud(
-                    solicitud
-            );
+
+            return dao.registrarSolicitud(solicitud); // guardamos en sql
 
         } catch (NumberFormatException e) {
 
-            // =====================================================
-            // ERROR SI EL PESO NO ES NUMÉRICO
-            // =====================================================
+
             JOptionPane.showMessageDialog(
                     null,
-                    "El peso debe ser numérico"
+                    "El peso debe ser numérico"   // validamos que el peso sea numerico, no acepta letras
             );
 
             return false;

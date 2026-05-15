@@ -57,14 +57,6 @@
             <Property name="text" type="java.lang.String" value="Operaciones"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="itemRegistro">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Registrar Paquete"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemRegistroActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemInventario">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ver Inventario "/>

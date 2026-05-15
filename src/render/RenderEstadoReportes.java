@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author camil
  */
 
-public class RenderEstadoSolicitudes
+public class RenderEstadoReportes
         extends DefaultTableCellRenderer {
 
     @Override
@@ -35,20 +35,20 @@ public class RenderEstadoSolicitudes
 
         String estado = value.toString();
 
-
+   
         if (estado.equals("PENDIENTE")) {
 
             celda.setBackground(Color.YELLOW);
             celda.setForeground(Color.BLACK);
 
-        } else if (estado.equals("ACEPTADA")) {
+        } else if (estado.equals("EN REVISIÓN")) {
 
-            celda.setBackground(Color.GREEN);
+            celda.setBackground(Color.ORANGE);
               celda.setForeground(Color.BLACK);
 
-        } else if (estado.equals("RECHAZADA")) {
+        } else if (estado.equals("RESUELTO")) {
 
-            celda.setBackground(Color.RED);
+            celda.setBackground(Color.GREEN);
               celda.setForeground(Color.BLACK);
 
         } else {

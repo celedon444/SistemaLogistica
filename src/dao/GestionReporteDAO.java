@@ -72,7 +72,7 @@ public class GestionReporteDAO {
                 );
 
                 gr.setEstado(
-                        rs.getString("estado")
+                        rs.getString("estado").toUpperCase()
                 );
 
                 lista.add(gr);
@@ -89,10 +89,8 @@ public class GestionReporteDAO {
         return lista;
     }
 
-    /**
-     * ACTUALIZAR ESTADO DEL REPORTE
-     */
-    public boolean actualizarEstadoReporte(
+
+    public boolean actualizarEstadoReporte(  // actualixamos los estado de los reportes
             int idReporte,
             String nuevoEstado
     ) {

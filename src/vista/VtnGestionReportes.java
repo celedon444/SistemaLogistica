@@ -40,7 +40,18 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
         tblGestionReportes.setModel(
                 control.mostrarReportes()
         );
+
+        // =====================================================
+        // VOLVER A APLICAR RENDERER DE COLORES
+        // =====================================================
+        tblGestionReportes.getColumnModel()
+                .getColumn(6)
+                .setCellRenderer(
+                        new render.RenderEstadoReportes()
+                );
+
         tblGestionReportes.clearSelection();
+
         cbEstadoReporte.setSelectedIndex(0);
     }
 
@@ -62,6 +73,12 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         btnActualizarEstadoReporte = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Gestión Reportes y Devoluciones");
 
         tblGestionReportes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

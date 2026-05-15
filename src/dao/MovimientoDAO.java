@@ -20,8 +20,7 @@ import java.util.List;
 
 public class MovimientoDAO {
 
-    // REGISTRAR MOVIMIENTO
-    public boolean registrarMovimiento(MovimientoPaquete mov) {
+    public boolean registrarMovimiento(MovimientoPaquete mov) {      // registramos los movimientos
 
         String sql = "INSERT INTO movimientos_paquete "
                 + "(guia_rastreo, estado, ubicacion, descripcion) "
@@ -48,8 +47,8 @@ public class MovimientoDAO {
         }
     }
 
-    // OBTENER HISTORIAL POR GUIA
-    public List<MovimientoPaquete> obtenerMovimientos(String guia) {
+    
+    public List<MovimientoPaquete> obtenerMovimientos(String guia) {     // obtenemos el historial por medio de la guia
 
         List<MovimientoPaquete> lista = new ArrayList<>();
 

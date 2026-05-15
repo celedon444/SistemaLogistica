@@ -9,9 +9,9 @@ import javax.swing.JOptionPane;
 
 public class PaqueteDAO {
 
-    // MÉTODO 1: Registrar (Ahora más limpio, sin enviar fecha manual)
+
     public boolean registrar(Paquete paquete) {
-        // QUITAMOS 'fecha_registro' del INSERT porque ahora MySQL usa 'fecha_sistema' automáticamente
+       
         String sql = "INSERT INTO paquetes (guia_rastreo, ciudad_origen, ciudad_destino, remitente, destinatario, direccion_entrega, peso, tipo_envio, estado, ubicacion_actual) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ConexionBD.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -36,7 +36,7 @@ public class PaqueteDAO {
         }
     }
 
-    // MÉTODO 2: Listar (Capturando el Timestamp para el cronómetro)
+    
     public List<Paquete> listarTodos() {
         List<Paquete> lista = new ArrayList<>();
         String sql = "SELECT * FROM paquetes";
@@ -54,9 +54,7 @@ public class PaqueteDAO {
                 p.setPeso(rs.getDouble("peso"));
                 p.setTipo(rs.getString("tipo_envio"));
                 p.setEstado(rs.getString("estado"));
-                p.setUbicacionActual(rs.getString("ubicacion_actual"));
-
-                // AQUÍ ESTÁ EL CAMBIO: Leemos la fecha como Timestamp
+                p.setUbicacionActual(rs.getString("ubicacion_actual"));          
                 p.setFechaSistema(rs.getTimestamp("fecha_registro"));
 
                 lista.add(p);
@@ -67,8 +65,7 @@ public class PaqueteDAO {
         return lista;
     }
 
-    // MÉTODO 3: Buscar uno solo (Lo necesitaremos para la vista de Rastreo)
-    public Paquete buscarPorGuia(String guia) {
+    public Paquete buscarPorGuia(String guia) {    // rastreamos paquete por guia
         String sql = "SELECT * FROM paquetes WHERE guia_rastreo = ?";
         try (Connection con = ConexionBD.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
 

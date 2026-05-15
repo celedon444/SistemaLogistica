@@ -17,18 +17,11 @@ import java.sql.SQLException;
  */
 public class SolicitudEnvioDAO {
 
-    /**
-     * ===================================================== REGISTRAR SOLICITUD
-     * EN MYSQL =====================================================
-     */
-    public boolean registrarSolicitud(
-            SolicitudEnvio solicitud
-    ) {
 
-        // =====================================================
-        // SQL PARA INSERTAR LA SOLICITUD
-        // =====================================================
-        String sql
+    public boolean registrarSolicitud(SolicitudEnvio solicitud) {  // registramos la solicitud en sql
+
+
+        String sql          // insertamos la solicitud
                 = "INSERT INTO solicitudes_envio("
                 + "remitente,"
                 + "destinatario,"
@@ -42,18 +35,13 @@ public class SolicitudEnvioDAO {
                 + "VALUES(?,?,?,?,?,?,?,?)";
 
         try (
-                // =====================================================
-                // CONEXIÓN A MYSQL
-                // =====================================================
-                Connection con = ConexionBD.conectar(); // =====================================================
-                // PREPARAR SQL
-                // =====================================================
+
+                Connection con = ConexionBD.conectar(); // conectamos a base de datos
+
                  PreparedStatement ps = con.prepareStatement(sql)) {
 
-            // =====================================================
-            // ENVIAR DATOS AL INSERT
-            // =====================================================
-            ps.setString(
+
+            ps.setString(   // enviamos datos al inser
                     1,
                     solicitud.getRemitente()
             );
@@ -93,21 +81,13 @@ public class SolicitudEnvioDAO {
                     solicitud.getEstado()
             );
 
-            // =====================================================
-            // EJECUTAR INSERT
-            // =====================================================
-            int resultado = ps.executeUpdate();
 
-            // =====================================================
-            // SI SE INSERTÓ CORRECTAMENTE
-            // =====================================================
+            int resultado = ps.executeUpdate(); 
+
             return resultado > 0;
 
         } catch (SQLException e) {
 
-            // =====================================================
-            // MOSTRAR ERROR
-            // =====================================================
             System.out.println(
                     "Error registrar solicitud: "
                     + e.getMessage()
@@ -117,42 +97,29 @@ public class SolicitudEnvioDAO {
         }
     }
 
-    /**
-     * ===================================================== LISTAR TODAS LAS
-     * SOLICITUDES =====================================================
-     */
-    public ResultSet listarSolicitudes() {
+
+    public ResultSet listarSolicitudes() {  // listamos todas solicitudes de envio de paquetes
 
         ResultSet resultado = null;
 
         try {
 
-            // =====================================================
-            // CONEXIÓN A MYSQL
-            // =====================================================
-            Connection con = ConexionBD.conectar();
+            Connection con = ConexionBD.conectar(); // conectamos a sql
 
-            // =====================================================
-            // SQL PARA CONSULTAR TODAS LAS SOLICITUDES
-            // =====================================================
-            String sql = "SELECT * FROM solicitudes_envio";
 
-            // =====================================================
-            // PREPARAR CONSULTA
-            // =====================================================
+            String sql   // cultamos las solicitudes
+                    = "SELECT * FROM solicitudes_envio "
+                    + "ORDER BY id_solicitud DESC";
+
+
             PreparedStatement ps
-                    = con.prepareStatement(sql);
+                    = con.prepareStatement(sql);  // preparamos la consulta
 
-            // =====================================================
-            // EJECUTAR CONSULTA
-            // =====================================================
-            resultado = ps.executeQuery();
+
+            resultado = ps.executeQuery(); // ejecutamos la consulta
 
         } catch (SQLException e) {
 
-            // =====================================================
-            // MOSTRAR ERROR
-            // =====================================================
             System.out.println(
                     "Error listar solicitudes: "
                     + e.getMessage()
@@ -164,37 +131,27 @@ public class SolicitudEnvioDAO {
 
     public String generarGuia() {
 
-        // =====================================================
-        // LETRAS DISPONIBLES
-        // =====================================================
-        String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+ 
+        String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  // letras disponible para generar la guia aleatoria
 
-        // =====================================================
-        // VARIABLE PARA GUARDAR LA GUÍA
-        // =====================================================
-        String guia = "";
 
-        // =====================================================
-        // GENERAR 2 LETRAS ALEATORIAS
-        // =====================================================
-        for (int i = 0; i < 2; i++) {
+        String guia = "";  // variable para guardar la guia
+
+
+        for (int i = 0; i < 2; i++) {   // generamos 2 letras aleatorias
 
             int posicion = (int) (Math.random() * letras.length());
 
             guia += letras.charAt(posicion);
         }
 
-        // =====================================================
-        // GENERAR 3 NÚMEROS ALEATORIOS
-        // =====================================================
-        int numero = (int) (Math.random() * 900) + 100;
+
+        int numero = (int) (Math.random() * 900) + 100;  // generamos 3 numeros aleatorios
 
         guia += numero;
 
-        // =====================================================
-        // RETORNAR GUÍA COMPLETA
-        // =====================================================
-        return guia;
+
+        return guia;  // retornamos guia completa
     }
 
     public boolean aceptarSolicitud(
@@ -202,36 +159,27 @@ public class SolicitudEnvioDAO {
             String guia
     ) {
 
-        // =====================================================
-        // SQL PARA ACTUALIZAR SOLICITUD
-        // =====================================================
-        String sql
+
+        String sql  // actualizamos la solicitud
                 = "UPDATE solicitudes_envio "
                 + "SET estado = ?, guia = ? "
                 + "WHERE id_solicitud = ?";
 
         try (
-                // =====================================================
-                // CONEXIÓN MYSQL
-                // =====================================================
-                Connection con = ConexionBD.conectar(); // =====================================================
-                // PREPARAR SQL
-                // =====================================================
+
+                Connection con = ConexionBD.conectar(); // conectamos a base de datos
+   
                  PreparedStatement ps = con.prepareStatement(sql)) {
 
-            // =====================================================
-            // ENVIAR DATOS AL UPDATE
-            // =====================================================
-            ps.setString(1, "ACEPTADA");
+
+            ps.setString(1, "ACEPTADA"); // enviamos datos al update
 
             ps.setString(2, guia);
 
             ps.setInt(3, idSolicitud);
 
-            // =====================================================
-            // EJECUTAR UPDATE
-            // =====================================================
-            int resultado = ps.executeUpdate();
+
+            int resultado = ps.executeUpdate(); // ejecutamos el update
 
             return resultado > 0;
 
@@ -250,37 +198,26 @@ public class SolicitudEnvioDAO {
             int idSolicitud
     ) {
 
-        // =====================================================
-        // SQL PARA RECHAZAR SOLICITUD
-        // =====================================================
-        String sql
+
+        String sql   // sql para rechazar la solicitud
                 = "UPDATE solicitudes_envio "
                 + "SET estado = ? "
                 + "WHERE id_solicitud = ?";
 
         try (
-                // =====================================================
-                // CONEXIÓN MYSQL
-                // =====================================================
-                Connection con = ConexionBD.conectar(); // =====================================================
-                // PREPARAR SQL
-                // =====================================================
-                 PreparedStatement ps = con.prepareStatement(sql)) {
 
-            // =====================================================
-            // NUEVO ESTADO
-            // =====================================================
-            ps.setString(1, "RECHAZADA");
+                Connection con = ConexionBD.conectar(); // conectamos
 
-            // =====================================================
-            // ID SOLICITUD
-            // =====================================================
-            ps.setInt(2, idSolicitud);
+                 PreparedStatement ps = con.prepareStatement(sql)) { // preparamoos
 
-            // =====================================================
-            // EJECUTAR UPDATE
-            // =====================================================
-            int resultado = ps.executeUpdate();
+
+            ps.setString(1, "RECHAZADA"); // nuevo estado, en caso que ADMIN quiera RECHAZAR
+
+
+            ps.setInt(2, idSolicitud); // ID de la solicitus
+
+
+            int resultado = ps.executeUpdate(); // ejecutanmos update
 
             return resultado > 0;
 

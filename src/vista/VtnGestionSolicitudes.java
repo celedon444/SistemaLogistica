@@ -5,6 +5,7 @@
 package vista;
 
 import dao.SolicitudEnvioDAO;
+import controlador.PaqueteController;
 import render.RenderEstadoSolicitudes;
 
 /**
@@ -315,6 +316,58 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
         // VALIDAR SI TODO SALIÓ BIEN
         // =====================================================
         if (resultado) {
+
+            // =====================================================
+// OBTENER DATOS DE LA TABLA
+// =====================================================
+            String remitente = tablaSolicitudes
+                    .getValueAt(fila, 2)
+                    .toString();
+
+            String destinatario = tablaSolicitudes
+                    .getValueAt(fila, 3)
+                    .toString();
+
+            String ciudadOrigen = tablaSolicitudes
+                    .getValueAt(fila, 4)
+                    .toString();
+
+            String ciudadDestino = tablaSolicitudes
+                    .getValueAt(fila, 5)
+                    .toString();
+
+            String direccion = tablaSolicitudes
+                    .getValueAt(fila, 6)
+                    .toString();
+
+            String peso = tablaSolicitudes
+                    .getValueAt(fila, 7)
+                    .toString();
+
+            String tipo = tablaSolicitudes
+                    .getValueAt(fila, 8)
+                    .toString();
+
+            // =====================================================
+            // CREAR CONTROLADOR DE PAQUETES
+            // =====================================================
+            controlador.PaqueteController paqueteController
+                    = new controlador.PaqueteController();
+
+            
+            // =====================================================
+            // REGISTRAR PAQUETE AUTOMÁTICAMENTE
+            // =====================================================
+            paqueteController.guardarPaquete(
+                    guia,
+                    remitente,
+                    destinatario,
+                    direccion,
+                    peso,
+                    tipo,
+                    ciudadOrigen,
+                    ciudadDestino
+            );
 
             javax.swing.JOptionPane.showMessageDialog(
                     this,

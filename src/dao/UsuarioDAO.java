@@ -18,8 +18,8 @@ public class UsuarioDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    // Si lo encuentra, creamos el objeto con los datos de la BD
-                    // Usamos username como nombre para el ejemplo
+                    // si lo encuentra, creamos el objeto con los datos de la BD
+                    // usamos username como nombre para el ejemplo
                     usuarioEncontrado = new Usuario();
                     usuarioEncontrado.setNombre(rs.getString("username"));
                     usuarioEncontrado.setRol(rs.getString("rol"));
